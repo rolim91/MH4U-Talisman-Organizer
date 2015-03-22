@@ -8,7 +8,10 @@ public class test {
 		System.out.println("Hello World");
 		
 		Talisman hello = new Talisman();
-		System.out.println(hello);
+		System.out.println("hello " + hello);
+
+		Talisman what = new Talisman();
+		System.out.println("what " + what);
 	}
 
 }
