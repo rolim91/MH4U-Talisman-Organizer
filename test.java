@@ -1,6 +1,5 @@
 
 import java.util.ArrayList;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class test {
@@ -24,7 +23,7 @@ public class test {
 	public static void init()
 	{
 		initSkills();
-		testSkills(primarySkill);
+		//testSkills(primarySkill);
 		testSkills(secondarySkill);
 		
 	}
