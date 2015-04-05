@@ -19,6 +19,19 @@ import javax.swing.event.ChangeListener;
 import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.Box;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
+import java.awt.Color;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 
 public class MainWindow implements ActionListener, ChangeListener {
@@ -37,8 +50,16 @@ public class MainWindow implements ActionListener, ChangeListener {
 	//UI variables
 	private JFrame frmMonsterHunter;
 	private JComboBox primarySkillBox, secondarySkillBox;
-	private JSpinner primarySpinner, secondarySpinner;
-	
+	private JSpinner primarySpinner, secondarySpinner, slotsSpinner, raritySpinner;
+	private JPanel actionsPanel;
+	private JPanel talismanTablePanel;
+	private JScrollPane scrollPane;
+	private JTable talismanTable;
+	private JMenuBar menuBar;
+	private JMenu mnFile;
+	private JMenuItem mntmImport;
+	private JMenuItem mntmExport;
+	private JMenuItem mntmQuit;
 	
 
 	/**
@@ -72,26 +93,22 @@ public class MainWindow implements ActionListener, ChangeListener {
 		initVariables();
 		setUILook();
 		
-		
-		
 		frmMonsterHunter = new JFrame();
 		frmMonsterHunter.setTitle("Monster Hunter 4 Talisman Organizer");
-		frmMonsterHunter.setBounds(100, 100, 536, 367);
+		frmMonsterHunter.setBounds(100, 100, 573, 461);
 		frmMonsterHunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		DefaultComboBoxModel<String> tempPrimModel = new DefaultComboBoxModel<String>(primSkillArray);
-		primarySkillBox = new JComboBox(tempPrimModel);
-		primarySkillBox.addActionListener(this);
-		
 		DefaultComboBoxModel<String> tempSecModel = new DefaultComboBoxModel<String>(secSkillArray);
-		secondarySkillBox = new JComboBox(tempSecModel);
-		secondarySkillBox.addActionListener(this);
 		
-		primarySpinner = new JSpinner();
-		primarySpinner.addChangeListener(this);
+		JPanel addTalismanPanel = new JPanel();
+		addTalismanPanel.setBorder(new TitledBorder(null, "Add Talisman", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
-		secondarySpinner = new JSpinner();
-		secondarySpinner.addChangeListener(this);
+		actionsPanel = new JPanel();
+		actionsPanel.setBorder(new TitledBorder(null, "Actions", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		
+		talismanTablePanel = new JPanel();
+		talismanTablePanel.setBorder(new TitledBorder(null, "My Talismans", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		
 		GroupLayout groupLayout = new GroupLayout(frmMonsterHunter.getContentPane());
@@ -100,28 +117,135 @@ public class MainWindow implements ActionListener, ChangeListener {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
-						.addComponent(primarySkillBox, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
-					.addGap(334))
+						.addComponent(addTalismanPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(actionsPanel, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(31)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(252, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(actionsPanel, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+					.addContainerGap())
 		);
+		
+		scrollPane = new JScrollPane();
+		GroupLayout gl_talismanTablePanel = new GroupLayout(talismanTablePanel);
+		gl_talismanTablePanel.setHorizontalGroup(
+			gl_talismanTablePanel.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 370, Short.MAX_VALUE)
+		);
+		gl_talismanTablePanel.setVerticalGroup(
+			gl_talismanTablePanel.createParallelGroup(Alignment.LEADING)
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
+		);
+		
+		TableModel model = new DefaultTableModel(100, 6) {
+			public boolean isCellEditable(int rowIndex, int mColIndex){
+				return false;
+			}
+		};
+		
+		talismanTable = new JTable(model);
+		scrollPane.setViewportView(talismanTable);
+		talismanTablePanel.setLayout(gl_talismanTablePanel);
+		
+		primarySpinner = new JSpinner();
+		secondarySpinner = new JSpinner();
+		slotsSpinner = new JSpinner();
+		raritySpinner = new JSpinner();
+		secondarySkillBox = new JComboBox(tempSecModel);
+		secondarySkillBox.setToolTipText("Secondary Skill");
+		primarySkillBox = new JComboBox(tempPrimModel);
+		primarySkillBox.setToolTipText("Primary Skill");
+		
+		JLabel primaryLabel = new JLabel("Primary Skill");
+		JLabel secondaryLabel = new JLabel("Secondary Skill");
+		JLabel slotsLabel = new JLabel("Slots");
+		JLabel rarityLabel = new JLabel("Rarity");
+		
+		
+		
+		
+		GroupLayout gl_addTalismanPanel = new GroupLayout(addTalismanPanel);
+		gl_addTalismanPanel.setHorizontalGroup(
+			gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_addTalismanPanel.createSequentialGroup()
+					.addGap(4)
+					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_addTalismanPanel.createSequentialGroup()
+							.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(raritySpinner))
+						.addGroup(gl_addTalismanPanel.createSequentialGroup()
+							.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_addTalismanPanel.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
+								.addComponent(primaryLabel)
+								.addComponent(secondaryLabel))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(rarityLabel)
+								.addComponent(slotsLabel)
+								.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))))
+					.addGap(281))
+		);
+		gl_addTalismanPanel.setVerticalGroup(
+			gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_addTalismanPanel.createSequentialGroup()
+					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(primaryLabel)
+						.addComponent(slotsLabel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(secondaryLabel)
+						.addComponent(rarityLabel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		
+		addTalismanPanel.setLayout(gl_addTalismanPanel);
+		primarySkillBox.addActionListener(this);
+		secondarySkillBox.addActionListener(this);
+		secondarySpinner.addChangeListener(this);
+		primarySpinner.addChangeListener(this);
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
+		
+		menuBar = new JMenuBar();
+		frmMonsterHunter.setJMenuBar(menuBar);
+		
+		mnFile = new JMenu("File");
+		menuBar.add(mnFile);
+		
+		mntmImport = new JMenuItem("Import");
+		mnFile.add(mntmImport);
+		
+		mntmExport = new JMenuItem("Export");
+		mnFile.add(mntmExport);
+		
+		mntmQuit = new JMenuItem("Quit");
+		mnFile.add(mntmQuit);
 		
 		
 	}

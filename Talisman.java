@@ -8,6 +8,7 @@ public class Talisman {
 	private int skill2_Value;
 	private int slots;
 	private int type;	//1 for  single, 2 for double
+	private int rarity;
 	
 	public Talisman() {
 		super();
