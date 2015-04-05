@@ -24,7 +24,6 @@ public class Utils {
 		lineScanner.close();
 	}
 	
-	
 	private static String populatePrimary(String line, ArrayList<Skill> primarySkill)
 	{
 		int index = 0;
@@ -96,4 +95,26 @@ public class Utils {
 		return;
 	}
 	
+	public static String[] populateSkillArray(ArrayList<Skill> skillList)
+	{
+		int size = skillList.size();
+		
+		String[] skillListArray = new String[size];
+		
+		//System.out.print(primSkillArray.length);
+		
+		for (int i = 0; i < size; i++)
+		{
+			skillListArray[i] = skillList.get(i).getStringName().replaceAll("_", " ");
+			//System.out.println(primSkillArray[i]);
+		}
+		
+		return skillListArray;
+	}
+	
+	
+	public static void addTalisman()
+	{
+		
+	}
 }

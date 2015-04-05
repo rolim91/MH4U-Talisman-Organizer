@@ -38,10 +38,8 @@ public class MainWindow implements ActionListener, ChangeListener {
 	
 	//Support Variables
 	private static String skillListLocation = "bin/resources/skill.txt";
-	private static ArrayList<Skill> primarySkill;
-	private static ArrayList<Skill> secondarySkill;
-	private static String[] primSkillArray;
-	private static String[] secSkillArray;
+	private static ArrayList<Skill> primarySkill, secondarySkill;
+	private static String[] primSkillArray, secSkillArray;
 
 	//Add Talisman Variables
 	private static String selectedPrim, selectedSec;
@@ -147,13 +145,9 @@ public class MainWindow implements ActionListener, ChangeListener {
 				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 257, Short.MAX_VALUE)
 		);
 		
-		TableModel model = new DefaultTableModel(100, 6) {
-			public boolean isCellEditable(int rowIndex, int mColIndex){
-				return false;
-			}
-		};
-		
-		talismanTable = new JTable(model);
+		//Talisman Table
+		TalismanTableModel talismanModel = new TalismanTableModel(100, 6); 
+		talismanTable = new JTable(talismanModel);
 		scrollPane.setViewportView(talismanTable);
 		talismanTablePanel.setLayout(gl_talismanTablePanel);
 		
@@ -230,7 +224,11 @@ public class MainWindow implements ActionListener, ChangeListener {
 		secondarySkillBox.addActionListener(this);
 		secondarySpinner.addChangeListener(this);
 		primarySpinner.addChangeListener(this);
+		raritySpinner.addChangeListener(this);
+		slotsSpinner.addChangeListener(this);
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
+		
+		
 		
 		menuBar = new JMenuBar();
 		frmMonsterHunter.setJMenuBar(menuBar);
@@ -296,6 +294,24 @@ public class MainWindow implements ActionListener, ChangeListener {
 			
 			//System.out.println(secondarySpinner.getValue());
 		}
+		else if(e.getSource() == raritySpinner)
+		{
+			int value = (int)raritySpinner.getValue();
+			
+			if(value < 0)
+				raritySpinner.setValue(0);
+			else if(value > 10)
+				raritySpinner.setValue(10);
+		}
+		else if(e.getSource() == slotsSpinner)
+		{
+			int value = (int)slotsSpinner.getValue();
+			
+			if(value < 0)
+				slotsSpinner.setValue(0);
+			else if(value > 3)
+				slotsSpinner.setValue(3);
+		}
 	}
 	
 	
@@ -329,8 +345,9 @@ public class MainWindow implements ActionListener, ChangeListener {
 	public static void initVariables()
 	{
 		initSkills();
-		populatePrimaryArray();
-		populateSecondaryArray();
+		
+		primSkillArray = Utils.populateSkillArray(primarySkill);
+		secSkillArray = Utils.populateSkillArray(secondarySkill);
 		
 		selectedPrim = "--";
 		selectedSec = "--";
@@ -359,37 +376,6 @@ public class MainWindow implements ActionListener, ChangeListener {
 		
 		//System.out.println(primarySkill.get(0));
 	}
-
-	public static void populatePrimaryArray()
-	{
-		int size = primarySkill.size();
-		
-		primSkillArray = new String[size];
-		
-		//System.out.print(primSkillArray.length);
-		
-		for (int i = 0; i < size; i++)
-		{
-			primSkillArray[i] = primarySkill.get(i).getStringName().replaceAll("_", " ");
-			//System.out.println(primSkillArray[i]);
-		}
-	}
-	
-	public static void populateSecondaryArray()
-	{
-		int size = secondarySkill.size();
-		
-		secSkillArray = new String[size];
-		
-		//System.out.print(secSkillArray.length);
-		
-		for (int i = 0; i < size; i++)
-		{
-			secSkillArray[i] = secondarySkill.get(i).getStringName().replaceAll("_", " ");
-			//System.out.println(secSkillArray[i]);
-		}
-	}
-	
 	
 	public static void testSkills(ArrayList<Skill> thisSkill)
 	{
