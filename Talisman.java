@@ -21,7 +21,7 @@ public class Talisman {
 		this.type = 0;
 	}
 
-	public Talisman(int numOfSkills, String skill_1, String skill_2, int skill1_Value, int skill2_Value, int slots, int type) {
+	public Talisman(int numOfSkills, String skill_1, String skill_2, int skill1_Value, int skill2_Value, int slots) {
 		super();
 		
 		this.numOfSkills = numOfSkills;
@@ -30,7 +30,10 @@ public class Talisman {
 		this.skill1_Value = skill1_Value;
 		this.skill2_Value = skill2_Value;
 		this.slots = slots;
-		this.type = type;
+		this.type = 1;
+		
+		if(skill_2 == null)
+			this.type = 2;
 		
 	}
 
@@ -60,6 +63,10 @@ public class Talisman {
 
 	public int getType() {
 		return type;
+	}
+
+	public int getRarity() {
+		return rarity;
 	}
 
 	@Override
