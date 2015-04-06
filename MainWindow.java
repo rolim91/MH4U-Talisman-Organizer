@@ -29,6 +29,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -148,6 +149,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 		//Talisman Table
 		talismanModel = new TalismanTableModel(); 
 		talismanTable = new JTable(talismanModel);
+		talismanTable.setRowSorter(new TableRowSorter<TalismanTableModel>(talismanModel));
 		scrollPane.setViewportView(talismanTable);
 		talismanTablePanel.setLayout(gl_talismanTablePanel);
 		
