@@ -47,4 +47,27 @@ public class TalismanTableModel extends DefaultTableModel{
 		
 		this.addRow(thisObject);
 	}
+	
+	@Override
+	public Class<?> getColumnClass(int colNum) {
+		
+		switch(colNum) {
+		
+		case 0:
+			return String.class;
+		case 1:
+			return Integer.class;
+		case 2:
+			return String.class;
+		case 3:
+			return Integer.class;
+		case 4:
+			return Integer.class;
+		case 5:
+			return Integer.class;
+		default:
+			return String.class;
+		}
+		
+	}
 }
