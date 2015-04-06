@@ -11,8 +11,9 @@ public class TalismanTableModel extends DefaultTableModel{
 
 	public TalismanTableModel()
 	{
-		String[] columnNames = {"", "", "", "", "", ""};
-		
+		super();
+		String[] columnNames = {"Skill 1", "Value 1", "Skill 2", "Value 2", "Slots", "Rarity"};
+		this.setColumnIdentifiers(columnNames);
 	}
 	
 	public TalismanTableModel(Object rowData[][], Object columnNames[])
@@ -36,6 +37,10 @@ public class TalismanTableModel extends DefaultTableModel{
 		thisObject[0] = thisTalisman.getSkill_1();
 		thisObject[1] = thisTalisman.getSkill1_Value();
 		thisObject[2] = thisTalisman.getSkill_2();
+		
+		if(thisTalisman.getSkill_2() == null)
+			thisObject[2] = "--";
+		
 		thisObject[3] = thisTalisman.getSkill2_Value();
 		thisObject[4] = thisTalisman.getSlots();
 		thisObject[5] = thisTalisman.getRarity();
