@@ -40,24 +40,24 @@ public class MainWindow implements ActionListener, ChangeListener {
 	private static String skillListLocation = "bin/resources/skill.txt";
 	private static ArrayList<Skill> primarySkill, secondarySkill;
 	private static String[] primSkillArray, secSkillArray;
+	private static TalismanList listOfTalismans;
 
 	//Add Talisman Variables
 	private static String selectedPrim, selectedSec;
-	private static int selectedPrimVal, selectedSecVal;
+	private static int selectedPrimVal, selectedSecVal, slotVal, rarityVal;
 	
 	//UI variables
 	private JFrame frmMonsterHunter;
 	private JComboBox primarySkillBox, secondarySkillBox;
 	private JSpinner primarySpinner, secondarySpinner, slotsSpinner, raritySpinner;
-	private JPanel actionsPanel;
-	private JPanel talismanTablePanel;
+	private JPanel actionsPanel, talismanTablePanel;
+	private JMenuItem mntmImport, mntmExport, mntmQuit;
+	private JButton addTalismanButton;
 	private JScrollPane scrollPane;
 	private JTable talismanTable;
 	private JMenuBar menuBar;
 	private JMenu mnFile;
-	private JMenuItem mntmImport;
-	private JMenuItem mntmExport;
-	private JMenuItem mntmQuit;
+	private TalismanTableModel talismanModel;
 	
 
 	/**
@@ -93,7 +93,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 		
 		frmMonsterHunter = new JFrame();
 		frmMonsterHunter.setTitle("Monster Hunter 4 Talisman Organizer");
-		frmMonsterHunter.setBounds(100, 100, 573, 461);
+		frmMonsterHunter.setBounds(100, 100, 644, 472);
 		frmMonsterHunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		DefaultComboBoxModel<String> tempPrimModel = new DefaultComboBoxModel<String>(primSkillArray);
@@ -115,22 +115,22 @@ public class MainWindow implements ActionListener, ChangeListener {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(addTalismanPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE)
+						.addComponent(addTalismanPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 391, Short.MAX_VALUE)
+							.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(actionsPanel, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(actionsPanel, GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(actionsPanel, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+						.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		
@@ -146,15 +146,19 @@ public class MainWindow implements ActionListener, ChangeListener {
 		);
 		
 		//Talisman Table
-		TalismanTableModel talismanModel = new TalismanTableModel(100, 6); 
+		talismanModel = new TalismanTableModel(); 
 		talismanTable = new JTable(talismanModel);
 		scrollPane.setViewportView(talismanTable);
 		talismanTablePanel.setLayout(gl_talismanTablePanel);
 		
+		//Spinner declaration
 		primarySpinner = new JSpinner();
 		secondarySpinner = new JSpinner();
 		slotsSpinner = new JSpinner();
 		raritySpinner = new JSpinner();
+		raritySpinner.setValue(1);
+		
+		//Skill box declaration
 		secondarySkillBox = new JComboBox(tempSecModel);
 		secondarySkillBox.setToolTipText("Secondary Skill");
 		primarySkillBox = new JComboBox(tempPrimModel);
@@ -165,7 +169,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 		JLabel slotsLabel = new JLabel("Slots");
 		JLabel rarityLabel = new JLabel("Rarity");
 		
-		
+		addTalismanButton = new JButton("Add Talisman");
 		
 		
 		GroupLayout gl_addTalismanPanel = new GroupLayout(addTalismanPanel);
@@ -194,7 +198,9 @@ public class MainWindow implements ActionListener, ChangeListener {
 								.addComponent(rarityLabel)
 								.addComponent(slotsLabel)
 								.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))))
-					.addGap(281))
+					.addGap(18)
+					.addComponent(addTalismanButton)
+					.addGap(237))
 		);
 		gl_addTalismanPanel.setVerticalGroup(
 			gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
@@ -215,13 +221,17 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addTalismanButton))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
 		addTalismanPanel.setLayout(gl_addTalismanPanel);
+		
+		//Listeners
 		primarySkillBox.addActionListener(this);
 		secondarySkillBox.addActionListener(this);
+		addTalismanButton.addActionListener(this);
 		secondarySpinner.addChangeListener(this);
 		primarySpinner.addChangeListener(this);
 		raritySpinner.addChangeListener(this);
@@ -229,19 +239,15 @@ public class MainWindow implements ActionListener, ChangeListener {
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
 		
 		
-		
+		//Menu Bar and Menu Bar Items
 		menuBar = new JMenuBar();
 		frmMonsterHunter.setJMenuBar(menuBar);
-		
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
 		mntmImport = new JMenuItem("Import");
 		mnFile.add(mntmImport);
-		
 		mntmExport = new JMenuItem("Export");
 		mnFile.add(mntmExport);
-		
 		mntmQuit = new JMenuItem("Quit");
 		mnFile.add(mntmQuit);
 		
@@ -253,17 +259,55 @@ public class MainWindow implements ActionListener, ChangeListener {
 		if(e.getSource() == primarySkillBox)
 		{
 			int index = primarySkillBox.getSelectedIndex();
-			selectedPrim = primarySkill.get(index).getStringName();
-			primarySpinner.setValue(primarySkill.get(index).getMin());
+			selectedPrim = handleSkillBoxActions(primarySpinner, primarySkill, index);
 			//System.out.println("Primary Skill: " + selectedPrim);
 		}
 		else if(e.getSource() == secondarySkillBox)
 		{
 			int index = secondarySkillBox.getSelectedIndex();
-			selectedSec = secondarySkill.get(index).getStringName();
-			secondarySpinner.setValue(secondarySkill.get(index).getMin());
+			selectedSec = handleSkillBoxActions(secondarySpinner, secondarySkill, index);
 			//System.out.println("Secondary Skill: " + selectedSec);
 		}
+		else if(e.getSource() == addTalismanButton)
+		{
+			addTalisman();
+		}
+	}
+	
+	/*
+	 * Handles SkillBox Actions.
+	 * Sets the value of the selected spinner.
+	 * 
+	 * Returns the string of the selected actions box.
+	 */
+	private String handleSkillBoxActions(JSpinner thisSpinner, ArrayList<Skill> thisSkillList, int index)
+	{
+		String tempString = thisSkillList.get(index).getStringName();
+		thisSpinner.setValue(thisSkillList.get(index).getMin());
+		
+		return tempString;
+	}
+	
+	
+	private void addTalisman()
+	{
+		System.out.println("Add Talisman");
+		
+		//create Talisman;
+		if(!selectedPrim.equals("--"))
+		{
+			String tempSelectedSec = selectedSec;
+			if(selectedSec.equals("--"))
+				tempSelectedSec = null;
+			
+			Talisman thisTalisman = new Talisman(selectedPrim, tempSelectedSec, selectedPrimVal, selectedSecVal, slotVal, rarityVal);
+			
+			//add thisTalisman to TalismanList
+			listOfTalismans.addTalisman(thisTalisman);
+			talismanModel.addTalisman(thisTalisman);
+		}
+		else
+			System.out.println("Cannot add empty primary skill");
 	}
 	
 	public void stateChanged(ChangeEvent e)
@@ -279,6 +323,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 			else if(value > primarySkill.get(index).getMax())
 				primarySpinner.setValue(primarySkill.get(index).getMax());
 			
+			selectedPrimVal = (int)primarySpinner.getValue();
 			//System.out.println(primarySpinner.getValue());
 		}
 		//Check if valid value is placed in secondarySpinner
@@ -292,16 +337,19 @@ public class MainWindow implements ActionListener, ChangeListener {
 			else if(value > secondarySkill.get(index).getMax())
 				secondarySpinner.setValue(secondarySkill.get(index).getMax());
 			
+			selectedSecVal = (int)secondarySpinner.getValue();
 			//System.out.println(secondarySpinner.getValue());
 		}
 		else if(e.getSource() == raritySpinner)
 		{
 			int value = (int)raritySpinner.getValue();
 			
-			if(value < 0)
-				raritySpinner.setValue(0);
+			if(value < 1)
+				raritySpinner.setValue(1);
 			else if(value > 10)
 				raritySpinner.setValue(10);
+			
+			rarityVal = (int)raritySpinner.getValue();
 		}
 		else if(e.getSource() == slotsSpinner)
 		{
@@ -311,6 +359,8 @@ public class MainWindow implements ActionListener, ChangeListener {
 				slotsSpinner.setValue(0);
 			else if(value > 3)
 				slotsSpinner.setValue(3);
+			
+			slotVal = (int)slotsSpinner.getValue();
 		}
 	}
 	
@@ -346,6 +396,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 	{
 		initSkills();
 		
+		listOfTalismans = new TalismanList();
 		primSkillArray = Utils.populateSkillArray(primarySkill);
 		secSkillArray = Utils.populateSkillArray(secondarySkill);
 		
@@ -353,6 +404,8 @@ public class MainWindow implements ActionListener, ChangeListener {
 		selectedSec = "--";
 		selectedPrimVal = 0;
 		selectedSecVal = 0;
+		slotVal = 0;
+		rarityVal = 1;
 	}
 	
 	/*

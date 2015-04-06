@@ -1,7 +1,6 @@
 
 public class Talisman {
 	
-	private int numOfSkills;
 	private String skill_1;
 	private String skill_2;
 	private int skill1_Value;
@@ -12,33 +11,29 @@ public class Talisman {
 	
 	public Talisman() {
 		super();
-		this.numOfSkills = 2;
 		this.skill_1 = "skill_1";
 		this.skill_2 = "skill_2";
 		this.skill1_Value = 0;
 		this.skill2_Value = 0;
 		this.slots = 0;
+		this.rarity = 0;
 		this.type = 0;
 	}
 
-	public Talisman(int numOfSkills, String skill_1, String skill_2, int skill1_Value, int skill2_Value, int slots) {
+	public Talisman(String skill_1, String skill_2, int skill1_Value, int skill2_Value, int slots, int rarity) {
 		super();
 		
-		this.numOfSkills = numOfSkills;
 		this.skill_1 = skill_1;
 		this.skill_2 = skill_2;
 		this.skill1_Value = skill1_Value;
 		this.skill2_Value = skill2_Value;
 		this.slots = slots;
+		this.rarity = rarity;
 		this.type = 1;
 		
-		if(skill_2 == null)
+		if(skill_2 != null)
 			this.type = 2;
 		
-	}
-
-	public int getNumOfSkills() {
-		return numOfSkills;
 	}
 
 	public String getSkill_1() {
@@ -69,13 +64,16 @@ public class Talisman {
 		return rarity;
 	}
 
+	
 	@Override
 	public String toString() {
-		return "Talisman [numOfSkills=" + numOfSkills + ", skill_1=" + skill_1
-				+ ", skill_2=" + skill_2 + ", skill1_Value=" + skill1_Value
-				+ ", skill2_Value=" + skill2_Value + ", slots=" + slots
-				+ ", type=" + type + "]";
+		return "Talisman [skill_1=" + skill_1 + ", skill_2=" + skill_2
+				+ ", skill1_Value=" + skill1_Value + ", skill2_Value="
+				+ skill2_Value + ", slots=" + slots + ", type=" + type
+				+ ", rarity=" + rarity + "]";
 	}
+
+	
 	
 	
 }
