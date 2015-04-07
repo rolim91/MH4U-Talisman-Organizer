@@ -1,8 +1,13 @@
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import javax.swing.table.DefaultTableModel;
+
 
 
 public class TalismanTableModel extends DefaultTableModel{
 
+	private ArrayList<Talisman> tableTalisman;
 
 	/**
 	 * 
@@ -12,6 +17,7 @@ public class TalismanTableModel extends DefaultTableModel{
 	public TalismanTableModel()
 	{
 		super();
+		tableTalisman = new ArrayList<Talisman>();
 		String[] columnNames = {"Skill 1", "Value 1", "Skill 2", "Value 2", "Slots", "Rarity"};
 		this.setColumnIdentifiers(columnNames);
 	}
@@ -33,6 +39,7 @@ public class TalismanTableModel extends DefaultTableModel{
 	
 	public void addTalisman(Talisman thisTalisman)
 	{
+		tableTalisman.add(thisTalisman);
 		Object[] thisObject = new Object[6];
 		thisObject[0] = thisTalisman.getSkill_1();
 		thisObject[1] = thisTalisman.getSkill1_Value();
@@ -70,4 +77,7 @@ public class TalismanTableModel extends DefaultTableModel{
 		}
 		
 	}
+	
+	
+	
 }
