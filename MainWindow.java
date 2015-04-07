@@ -1,11 +1,11 @@
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.JFrame;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -17,12 +17,16 @@ import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.UnsupportedLookAndFeelException;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+
 import java.awt.Color;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
@@ -149,7 +153,27 @@ public class MainWindow implements ActionListener, ChangeListener {
 		//Talisman Table
 		talismanModel = new TalismanTableModel(); 
 		talismanTable = new JTable(talismanModel);
-		talismanTable.setRowSorter(new TableRowSorter<TalismanTableModel>(talismanModel));
+		TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(talismanModel);
+		talismanTable.setRowSorter(rowSorter);
+		
+		//set comparator for  3rd column, to output ordered strings
+		rowSorter.setComparator(2, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				
+				System.out.println(o1);
+				
+				if(o1.equals("--") && o2.equals("--"))
+					return 0;
+				else if(o1.equals("--"))
+					return 1;
+				else if(o2.equals("--"))
+					return -1;
+				
+				return o1.compareTo(o2);
+			}
+		});
+		
 		scrollPane.setViewportView(talismanTable);
 		talismanTablePanel.setLayout(gl_talismanTablePanel);
 		
@@ -181,16 +205,16 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addGap(4)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.LEADING, false)
 						.addGroup(gl_addTalismanPanel.createSequentialGroup()
-							.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+							.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(raritySpinner))
+							.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_addTalismanPanel.createSequentialGroup()
 							.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_addTalismanPanel.createSequentialGroup()
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
+									.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))
 								.addComponent(primaryLabel)
@@ -213,8 +237,8 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(secondaryLabel)
@@ -222,9 +246,9 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(addTalismanButton)
 						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(addTalismanButton))
+						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		
@@ -293,7 +317,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 	
 	private void addTalisman()
 	{
-		System.out.println("Add Talisman");
+		//System.out.println("Add Talisman");
 		
 		//create Talisman;
 		if(!selectedPrim.equals("--"))
