@@ -78,13 +78,13 @@ public class Talisman {
 	{
 		
 		if(this.type == 1 && compTalisman.getType() == 1)
-			this.singleToSingle(compTalisman);
+			return this.singleToSingle(compTalisman);
 		else if(this.type == 1 && compTalisman.getType() == 2)
-			this.singleToDouble(compTalisman);
+			return this.singleToDouble(compTalisman);
 		else if(this.type == 2 && compTalisman.getType() == 1)
-			this.doubleToSingle(compTalisman);
+			return this.doubleToSingle(compTalisman);
 		else if(this.type == 2 && compTalisman.getType() == 2)
-			this.doubleToDouble(compTalisman);
+			return this.doubleToDouble(compTalisman);
 			
 		
 		
@@ -121,14 +121,14 @@ public class Talisman {
 		{
 			System.out.println("*myTalisman equal");
 			
-			if(this.skill1_Value > compTalisman.getSkill1_Value())
+			if(this.skill1_Value >= compTalisman.getSkill1_Value())
 			{
-				System.out.println("**myTalisman skill greater");
+				System.out.println("**myTalisman skill equal or greater");
 				return 1;
 			}
 			else
 			{
-				System.out.println("**myTalisman skill lesser or equal");
+				System.out.println("**myTalisman skill lesser");
 				return -1;
 			}
 		}
@@ -136,30 +136,34 @@ public class Talisman {
 		{
 			System.out.println("*myTalisman greater");
 			
-			if(this.skill1_Value > compTalisman.getSkill1_Value())
+			if(this.skill1_Value >= compTalisman.getSkill1_Value())
 			{
-				System.out.println("**myTalisman skill greater");
+				System.out.println("**myTalisman skill equal or greater");
 				return 1;
 			}
 			else
 			{
-				System.out.println("**myTalisman skill lesser or equal");
+				System.out.println("**myTalisman skill lesser");
 				return 0;
 			}
 		}
 		
 	}
 	
-	
+	/*
+	 * Compare single skilled Talisman to a double skilled Talisman
+	 * 
+	 * @param Talisman compTalisman talisman to be compared to
+	 * @returns -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 */
 	private int singleToDouble(Talisman compTalisman)
 	{
 		System.out.println("singleToDouble");
 		
 		if(compTalisman.getSkill2_Value() < 0)
 		{
-			System.out.println("compTalisman second is negative");
+			System.out.println("compTalisman second is negative removing negative");
 			int result = singleToSingle(compTalisman);
-			
 			return (result < 0 ? 0 : result);
 		}
 		
@@ -170,12 +174,19 @@ public class Talisman {
 		else
 			tempTalisman = swapSkills(compTalisman);
 		
-		if(this.skill1_Value < tempTalisman.getSkill1_Value())
-			return -1;
 		
-		return 0;
+		if(this.slots > compTalisman.getSlots())
+			return 0;
+		else
+			return (this.skill1_Value <= tempTalisman.getSkill1_Value() ? -1 : 0);
 	}
 	
+	/*
+	 * Swap Talismans that swaps the primary and secondary skills of the given talisman
+	 * 
+	 * @param currTalisman Talisman the Talisman that needs to be swapped
+	 * @return Talisman with swapped skills (includes values)
+	 */
 	private Talisman swapSkills(Talisman currTalisman)
 	{
 		Talisman temp = new Talisman(	currTalisman.getSkill_2(), currTalisman.getSkill_1(), 
@@ -186,11 +197,16 @@ public class Talisman {
 		return temp;
 	}
 	
+	/*
+	 * Compare double skilled Talisman to a single skilled Talisman
+	 * 
+	 * @param Talisman compTalisman talisman to be compared to
+	 * @returns -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 */
 	private int doubleToSingle(Talisman compTalisman)
 	{
 		System.out.println("doubleToSingle");
-		
-		return 0;
+		return -1 * compTalisman.singleToDouble(this);
 	}
 	
 	private int doubleToDouble(Talisman compTalisman)

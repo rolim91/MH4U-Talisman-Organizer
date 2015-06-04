@@ -24,7 +24,6 @@ public class TalismanList {
 		{
 			//add to primary only
 			this.insertSingle(thisTalisman);
-			
 			this.addToPrimary(thisTalisman);
 		}
 		//double
