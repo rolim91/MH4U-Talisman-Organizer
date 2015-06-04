@@ -19,11 +19,15 @@ public class TalismanList {
 	 */
 	public void addTalisman(Talisman thisTalisman)
 	{
+		//single
 		if(thisTalisman.getType() == 1)
 		{
 			//add to primary only
+			this.insertSingle(thisTalisman);
+			
 			this.addToPrimary(thisTalisman);
 		}
+		//double
 		else if(thisTalisman.getType() == 2)
 		{
 			//add to both
@@ -31,6 +35,50 @@ public class TalismanList {
 			this.addToSecondary(thisTalisman);
 		}
 			
+	}
+	
+	/*
+	 * Check to see if the talisman can be inserted()
+	 */
+	private void insertSingle(Talisman thisTalisman)
+	{
+		System.out.println("inserSingle");
+		
+		//check if thisTalisman.skill_1 is in the HashMaps
+		ArrayList<Talisman> checkListPrimary = primary.get(thisTalisman.getSkill_1());
+		ArrayList<Talisman> checkListSecondary = secondary.get(thisTalisman.getSkill_1());
+		
+		if(checkListPrimary != null)
+		{
+			System.out.println("not null");
+			this.iterateListSingle(thisTalisman, checkListPrimary);
+		}
+		
+		
+		
+	}
+	
+	private void iterateListSingle(Talisman thisTalisman, ArrayList<Talisman> thisList)
+	{
+		
+		int size = thisList.size();
+		
+		for(int i = 0; i < size; i++)
+		{
+			Talisman tempTalisman = thisList.get(i);
+			System.out.println(tempTalisman);
+			
+			//Single
+			if(tempTalisman.getType() == 1)
+			{
+				
+			}
+			//Double
+			else if(tempTalisman.getType() == 2)
+			{
+				
+			}
+		}
 	}
 	
 	private void addToPrimary(Talisman thisTalisman)
