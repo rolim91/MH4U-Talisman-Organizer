@@ -77,6 +77,8 @@ public class Talisman {
 	public int compare(Talisman compTalisman)
 	{
 		
+		
+		
 		if(this.type == 1 && compTalisman.getType() == 1)
 			return this.singleToSingle(compTalisman);
 		else if(this.type == 1 && compTalisman.getType() == 2)
@@ -92,10 +94,33 @@ public class Talisman {
 	}
 	
 	/*
+	 * Check if object instance is negative
+	 * 
+	 * @return true if talisman is both skills are negative for double or the skill is negative for single
+	 * @return false o.w.
+	 */
+	public boolean checkNegative()
+	{
+		if(this.type == 1)
+		{
+			if(this.skill1_Value < 0)
+				return true;
+		}
+		else if(this.type == 2)
+		{
+			if(this.skill1_Value < 0 && this.skill2_Value < 0)
+				return true;
+		}
+		
+		
+		return false;
+	}
+	
+	/*
 	 * Compare single talisman to another single talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
-	 * @returns -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 * @return -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
 	 */
 	private int singleToSingle(Talisman compTalisman)
 	{
@@ -132,7 +157,7 @@ public class Talisman {
 				return -1;
 			}
 		}
-		else
+		else //this.slots > compTalisman.getSlots()
 		{
 			System.out.println("*myTalisman greater");
 			
@@ -154,7 +179,7 @@ public class Talisman {
 	 * Compare single skilled Talisman to a double skilled Talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
-	 * @returns -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 * @return -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
 	 */
 	private int singleToDouble(Talisman compTalisman)
 	{
@@ -164,7 +189,7 @@ public class Talisman {
 		{
 			System.out.println("compTalisman second is negative removing negative");
 			int result = singleToSingle(compTalisman);
-			return (result < 0 ? 0 : result);
+			return (result <= 0 ? 0 : result);
 		}
 		
 		Talisman tempTalisman;
@@ -201,7 +226,7 @@ public class Talisman {
 	 * Compare double skilled Talisman to a single skilled Talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
-	 * @returns -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 * @return -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
 	 */
 	private int doubleToSingle(Talisman compTalisman)
 	{
@@ -209,9 +234,58 @@ public class Talisman {
 		return -1 * compTalisman.singleToDouble(this);
 	}
 	
+	/*
+	 * Compare double skilled Talisman to another double skilled Talisman
+	 * 
+	 * @param Talisman compTalisman talisman to be compared to
+	 * @return -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 */
 	private int doubleToDouble(Talisman compTalisman)
 	{
 		System.out.println("doubleToDouble");
+		
+/*
+		If (myTalisman.skill1 == currTalisman.skill1 && myTalisman.skill2 = currTalisman.skill2)
+			dont swap
+			go to next comparison
+
+		else if (myTalisman.skill1 == currTalisman.skill2 && myTalisman.skill2 == currTalisman.skill1)
+			swap skill
+			swap == true
+			go to next comparison
+
+
+		//Here we have the same skills
+
+		
+		If myTalisman.Slot < currTalisman.Slot
+
+			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
+				keep myTalisman
+				keep currTalisman
+			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
+				delete myTalisman
+				keep currTalisman
+
+
+		If mySlot == currSlot
+
+			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
+				keep myTalisman
+				delete currTalisman
+			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
+				delete myTalisman
+				keep currTalisman
+
+		if mySlot > currSlot
+
+			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
+				keep myTalisman
+				delete currTalisman
+			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
+				keep myTalisman
+				keep currTalisman
+				*/
 		
 		return 0;
 	}
