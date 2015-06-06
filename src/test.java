@@ -72,7 +72,20 @@ public class test {
 		//Talisman talisman4 = new Talisman("Anti-Theft", "Amplify", 7, 5, 2, 0);
 		//Talisman talisman5 = new Talisman("Amplify", null, 4, 0, 2, 0);
 		
+		/*Talisman talisman = new Talisman("Amplify", null, 10, 0, 2, 0);
+		Talisman talisman2 = new Talisman("Amplify", null, -10, 0, 2, 0);
+		Talisman talisman3 = new Talisman("Anti-Theft", "Amplify", 7, 5, 2, 0);
+		Talisman talisman4 = new Talisman("Anti-Theft", "Amplify", -7, 5, 2, 0);
+		Talisman talisman5 = new Talisman("Anti-Theft", "Amplify", -7, -5, 2, 0);
+		
+		System.out.println(talisman.checkNegative());
+		System.out.println(talisman2.checkNegative());
+		System.out.println(talisman3.checkNegative());
+		System.out.println(talisman4.checkNegative());
+		System.out.println(talisman5.checkNegative());*/
+		
 		testSingleComparison();
+		testDoubleComparison();
 		
 		
 		
@@ -99,6 +112,10 @@ public class test {
 	{
 		testSingleToSingleComparison();
 		testSingleToDoubleComparison();
+	}
+	
+	public static void testDoubleComparison()
+	{
 		testDoubleToSingleComparison();
 	}
 	
