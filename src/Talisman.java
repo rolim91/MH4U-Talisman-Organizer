@@ -216,7 +216,7 @@ public class Talisman {
 	{
 		Talisman temp = new Talisman(	currTalisman.getSkill_2(), currTalisman.getSkill_1(), 
 										currTalisman.getSkill2_Value(), currTalisman.getSkill1_Value(), 
-										currTalisman.getSlots(), currTalisman.getRarity());
+										currTalisman.getSlots(), currTalisman.getRarity()	);
 		
 		
 		return temp;
@@ -244,28 +244,61 @@ public class Talisman {
 	{
 		System.out.println("doubleToDouble");
 		
-/*
-		If (myTalisman.skill1 == currTalisman.skill1 && myTalisman.skill2 = currTalisman.skill2)
-			dont swap
-			go to next comparison
-
-		else if (myTalisman.skill1 == currTalisman.skill2 && myTalisman.skill2 == currTalisman.skill1)
-			swap skill
-			swap == true
-			go to next comparison
-
-
-		//Here we have the same skills
-
+		Talisman tempTalisman;
 		
-		If myTalisman.Slot < currTalisman.Slot
-
-			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
-				keep myTalisman
-				keep currTalisman
-			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
-				delete myTalisman
-				keep currTalisman
+		if(this.getSkill_1().equals(compTalisman.getSkill_1()))
+			tempTalisman = compTalisman;
+		else
+			tempTalisman = swapSkills(compTalisman);
+		
+		//Both tempTalisman and thisTalisman have the same skills
+		if(this.getSkill_1().equals(tempTalisman.getSkill_1()) && this.getSkill_2().equals(tempTalisman.getSkill_2()))
+		{
+			System.out.println("*Have the same skill");
+			
+			if(this.getSlots() < tempTalisman.getSlots())
+			{
+				System.out.println("**myTalisman lesser");
+				if(this.getSkill1_Value() > tempTalisman.getSkill1_Value() || this.getSkill2_Value() > tempTalisman.getSkill2_Value())
+				{
+					System.out.println("***myTalisman skill one or both greater");
+					return 0;
+				}
+				else
+				{
+					System.out.println("**myTalisman both skills are lesser or equal");
+					return -1;
+				}
+				
+			}
+			else if(this.getSlots() == tempTalisman.getSlots())
+			{
+				
+				if(this.getSkill1_Value() > tempTalisman.getSkill1_Value() && this.getSkill2_Value() < tempTalisman.getSkill2_Value())
+				{
+					return 0;
+				}
+				else if(this.getSkill1_Value() < tempTalisman.getSkill1_Value() && this.getSkill2_Value() > tempTalisman.getSkill2_Value())
+				{
+					return 0;
+				}
+				else if(this.getSkill1_Value() > tempTalisman.getSkill1_Value() || this.getSkill2_Value() > tempTalisman.getSkill2_Value())
+				{
+					return 1;
+				}
+				else
+				{
+					return -1;
+				}
+				
+			}
+			else
+			{
+				
+			}
+		}
+		
+		/*
 
 
 		If mySlot == currSlot
