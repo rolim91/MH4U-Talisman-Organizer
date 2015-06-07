@@ -117,6 +117,7 @@ public class test {
 	public static void testDoubleComparison()
 	{
 		testDoubleToSingleComparison();
+		testDoubleToDoubleComparison();
 	}
 	
 	
@@ -253,6 +254,8 @@ public class test {
 
 	public static void testDoubleToSingleComparison()
 	{
+		System.out.println("**********TESTING Double to Single with negative**********");
+		
 		//Talisman compared double with negative and equal slots
 		Talisman talisman13 = new Talisman("Amplify", "Bomb_Boost", 6, -1, 0, 0);
 		Talisman talisman14 = new Talisman("Amplify", null, 5, 0, 0, 0); // less than
@@ -287,7 +290,88 @@ public class test {
 		System.out.println("Result should be 0: it is " + talisman21.compare(talisman22) + "\n");
 		System.out.println("Result should be -1: it is " + talisman21.compare(talisman23) + "\n");
 		System.out.println("Result should be -1: it is " + talisman21.compare(talisman24) + "\n");
+	
+	}
+	
+	public static void testDoubleToDoubleComparison()
+	{
 		
+		System.out.println("********Testing Double to Double********");
+		
+		System.out.println("TESTING SWAP");
+		Talisman talisman1 = new Talisman("Amplify", "Bomb_Boost", 6, 1, 0, 0);
+		Talisman talisman2 = new Talisman("Amplify", "Bomb_Boost", 6, 1, 0, 0);
+		Talisman talisman3 = new Talisman("Bomb_Boost", "Amplify", 6, -1, 0, 0);
+		Talisman talisman4 = new Talisman("Hunger", "Amplify", 6, -1, 0, 0);
+		Talisman talisman5 = new Talisman("Amplify", "Hunger", 6, -1, 0, 0);
+		
+		System.out.println(talisman1 + "\n");
+		talisman1.compare(talisman2);
+		talisman1.compare(talisman3);
+		talisman1.compare(talisman4);
+		talisman1.compare(talisman5);		
+		
+		System.out.println("\n**********TESTING Double to Double main talisman slot lesser**********\n");
+		Talisman talisman6 = new Talisman("Amplify", "Bomb_Boost", 6, 6, 0, 0);
+
+		System.out.println("**Testing Main slot is lesser\n");
+		//One of main talisman skill is greater
+		//Result should be 0
+		Talisman talisman7 = new Talisman("Amplify", "Bomb_Boost", 5, 5, 3, 0); //both greater
+		Talisman talisman8 = new Talisman("Amplify", "Bomb_Boost", 7, 5, 3, 0); //skill2 lesser skill1 greater
+		Talisman talisman9 = new Talisman("Amplify", "Bomb_Boost", 5, 7, 3, 0); //skill1 lesser skill2 greater
+		Talisman talisman10 = new Talisman("Amplify", "Bomb_Boost", 5, 6, 3, 0); //skill1 lesser skill2 equal
+		Talisman talisman11 = new Talisman("Amplify", "Bomb_Boost", 6, 5, 3, 0); //skill2 lesser skill1 equal
+		
+		//Otherwise Result should be -1
+		Talisman talisman12 = new Talisman("Amplify", "Bomb_Boost", 6, 6, 3, 0); //both equal
+		Talisman talisman13 = new Talisman("Amplify", "Bomb_Boost", 6, 7, 3, 0); //skill2 lesser
+		Talisman talisman14 = new Talisman("Amplify", "Bomb_Boost", 7, 6, 3, 0);//skill1 lesser
+		Talisman talisman15 = new Talisman("Amplify", "Bomb_Boost", 7, 7, 3, 0); //both lesser
+		
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman7) + "\n");
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman8) + "\n");
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman9) + "\n");
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman10) + "\n");
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman11) + "\n");
+
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman12) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman13) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman14) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman15) + "\n");
+		
+		
+		System.out.println("**Testing Main slot is equal\n");
+		//One of main talisman skill is greater
+		
+		
+		//Result should be 0
+		Talisman talisman16 = new Talisman("Amplify", "Bomb_Boost", 7, 5, 0, 0); //skill2 lesser skill1 greater
+		Talisman talisman17 = new Talisman("Amplify", "Bomb_Boost", 5, 7, 0, 0); //skill1 lesser skill2 greater
+		
+
+		//Result should be 1
+		Talisman talisman18 = new Talisman("Amplify", "Bomb_Boost", 5, 5, 0, 0); //both greater
+		Talisman talisman19 = new Talisman("Amplify", "Bomb_Boost", 5, 6, 0, 0); //skill1 greater skill2 equal
+		Talisman talisman20 = new Talisman("Amplify", "Bomb_Boost", 6, 5, 0, 0); //skill2 greater skill1 equal
+		
+		//Otherwise Result should be -1
+		Talisman talisman21 = new Talisman("Amplify", "Bomb_Boost", 6, 6, 0, 0); //both equal
+		Talisman talisman22 = new Talisman("Amplify", "Bomb_Boost", 6, 7, 0, 0); //skill2 lesser skill1 equal
+		Talisman talisman23 = new Talisman("Amplify", "Bomb_Boost", 7, 6, 0, 0);//skill1 lesser skill2 equal
+		Talisman talisman24 = new Talisman("Amplify", "Bomb_Boost", 7, 7, 0, 0); //both lesser
+		
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman16) + "\n");
+		System.out.println("Result should be 0: it is " + talisman6.compare(talisman17) + "\n");
+		
+		System.out.println("Result should be 1: it is " + talisman6.compare(talisman18) + "\n");
+		System.out.println("Result should be 1: it is " + talisman6.compare(talisman19) + "\n");
+		System.out.println("Result should be 1: it is " + talisman6.compare(talisman20) + "\n");
+
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman21) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman22) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman23) + "\n");
+		System.out.println("Result should be -1: it is " + talisman6.compare(talisman24) + "\n");
 	}
 	
 }
