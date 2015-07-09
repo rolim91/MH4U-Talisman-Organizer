@@ -373,5 +373,6 @@ public class test {
 		System.out.println("Result should be -1: it is " + talisman6.compare(talisman23) + "\n");
 		System.out.println("Result should be -1: it is " + talisman6.compare(talisman24) + "\n");
 	}
+
 	
 }
