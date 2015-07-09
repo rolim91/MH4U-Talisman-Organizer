@@ -73,7 +73,11 @@ public class Talisman {
 				+ ", rarity=" + rarity + "]";
 	}
 
-	
+	/*
+	 * Compare currentTalisman to compTalisman
+	 * @param compTalisman the talisman that is going to compared to
+	 * @return -1,0,1 -1 to delete this talisman, 0 to keep both, 1 to delete compTalisman
+	 */
 	public int compare(Talisman compTalisman)
 	{
 		
