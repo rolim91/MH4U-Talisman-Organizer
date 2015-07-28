@@ -1,6 +1,8 @@
 import java.util.HashMap;
 import java.util.ArrayList;
 
+import talisman.model.Talisman;
+
 public class TalismanList {
 
 	private HashMap<String, ArrayList<Talisman>> primary;

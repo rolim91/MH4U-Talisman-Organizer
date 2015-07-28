@@ -1,5 +1,8 @@
+package utilities;
 import java.util.*;
 import java.io.*;
+
+import skill.Skill;
 
 
 public class Utils {

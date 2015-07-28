@@ -1,7 +1,10 @@
+package talisman.view;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import javax.swing.table.DefaultTableModel;
+
+import talisman.model.Talisman;
 
 
 
