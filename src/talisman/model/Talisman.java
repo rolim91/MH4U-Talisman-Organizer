@@ -1,3 +1,4 @@
+package talisman.model;
 
 public class Talisman {
 	

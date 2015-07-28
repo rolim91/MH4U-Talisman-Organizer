@@ -2,6 +2,10 @@
 import java.util.ArrayList;
 import java.io.IOException;
 
+import skill.Skill;
+import talisman.model.Talisman;
+import utilities.Utils;
+
 public class test {
 	
 	private static String skillListLocation = "bin/resources/skill.txt";
@@ -11,7 +15,6 @@ public class test {
 	public static void main(String[] args) {
 		
 		init();
-		
 	}
 	
 	

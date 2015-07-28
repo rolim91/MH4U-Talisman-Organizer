@@ -38,13 +38,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import skill.Skill;
+import talisman.model.Talisman;
+import talisman.view.TalismanTableModel;
+import utilities.Utils;
+
 
 public class MainWindow implements ActionListener, ChangeListener {
 	
 	//Support Variables
 	private static String skillListLocation = "bin/resources/skill.txt";
 	private static ArrayList<Skill> primarySkill, secondarySkill;
-	private static String[] primSkillArray, secSkillArray;
+	public static String[] primSkillArray, secSkillArray;
 	private static TalismanList listOfTalismans;
 
 	//Add Talisman Variables
