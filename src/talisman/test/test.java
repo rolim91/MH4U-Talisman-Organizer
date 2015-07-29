@@ -1,3 +1,4 @@
+package talisman.test;
 
 import java.util.ArrayList;
 import java.io.IOException;
