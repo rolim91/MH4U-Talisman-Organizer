@@ -42,6 +42,7 @@ import skill.Skill;
 import talisman.model.Talisman;
 import talisman.view.TalismanTableModel;
 import utilities.Utils;
+import talisman.view.AddTalismanPanel;
 
 
 public class MainWindow implements ActionListener, ChangeListener {
@@ -103,7 +104,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 		
 		frmMonsterHunter = new JFrame();
 		frmMonsterHunter.setTitle("Monster Hunter 4 Talisman Organizer");
-		frmMonsterHunter.setBounds(100, 100, 709, 535);
+		frmMonsterHunter.setBounds(100, 100, 709, 541);
 		frmMonsterHunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		DefaultComboBoxModel<String> tempPrimModel = new DefaultComboBoxModel<String>(primSkillArray);
@@ -126,7 +127,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(addTalismanPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(actionsPanel, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)))
@@ -139,20 +140,20 @@ public class MainWindow implements ActionListener, ChangeListener {
 					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(actionsPanel, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
-						.addComponent(talismanTablePanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
+						.addComponent(actionsPanel, GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+						.addComponent(talismanTablePanel, GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		
 		scrollPane = new JScrollPane();
 		GroupLayout gl_talismanTablePanel = new GroupLayout(talismanTablePanel);
 		gl_talismanTablePanel.setHorizontalGroup(
-			gl_talismanTablePanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 483, Short.MAX_VALUE)
+			gl_talismanTablePanel.createParallelGroup(Alignment.TRAILING)
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
 		);
 		gl_talismanTablePanel.setVerticalGroup(
-			gl_talismanTablePanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+			gl_talismanTablePanel.createParallelGroup(Alignment.TRAILING)
+				.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
 		);
 		
 		//Talisman Table
@@ -241,8 +242,8 @@ public class MainWindow implements ActionListener, ChangeListener {
 						.addComponent(slotsLabel))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(slotsSpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(primarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(primarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_addTalismanPanel.createParallelGroup(Alignment.BASELINE)
