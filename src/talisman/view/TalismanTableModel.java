@@ -1,61 +1,91 @@
 package talisman.view;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Comparator;
 
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.AbstractTableModel;
 
 import talisman.model.Talisman;
 
 
 
-public class TalismanTableModel extends DefaultTableModel{
+public class TalismanTableModel extends AbstractTableModel{
 
-	private ArrayList<Talisman> tableTalisman;
 
-	/**
-	 * 
-	 */
+	private String[] columnNames = 	{ "Skill 1", 	"Value 1", 		"Skill 2", 		"Value 2", 		"Slots", 		"Rarity"};
+	private Class[] columnType = 	{ String.class, Integer.class,  String.class, 	Integer.class, 	Integer.class, 	Integer.class};
+	private List<Talisman> talismanList = new ArrayList<Talisman>();
+	
 	private static final long serialVersionUID = -8854771373861055405L;
-
+	
+	/*
+	 * Default Constructor
+	 */
 	public TalismanTableModel()
 	{
 		super();
-		tableTalisman = new ArrayList<Talisman>();
-		String[] columnNames = {"Skill 1", "Value 1", "Skill 2", "Value 2", "Slots", "Rarity"};
-		this.setColumnIdentifiers(columnNames);
 	}
 	
-	public TalismanTableModel(Object rowData[][], Object columnNames[])
+	/*
+	 * Constructor
+	 */
+	public TalismanTableModel(ArrayList<Talisman> talismanList)
 	{
-		super(rowData, columnNames);
-	}
-	
-	
-	public TalismanTableModel(int i, int j) {
-		super(i, j);
+		super();
+		this.talismanList = talismanList;
 	}
 
+	@Override
+	public int getColumnCount() {
+		// TODO Auto-generated method stub
+		return columnNames.length;
+	}
 
-	public boolean isCellEditable(int rowIndex, int mColIndex){
-		return false;
+	@Override
+	public int getRowCount() {
+		// TODO Auto-generated method stub
+		return talismanList.size();
 	}
 	
-	public void addTalisman(Talisman thisTalisman)
-	{
-		tableTalisman.add(thisTalisman);
-		Object[] thisObject = new Object[6];
-		thisObject[0] = thisTalisman.getSkill_1();
-		thisObject[1] = thisTalisman.getSkill1_Value();
-		thisObject[2] = thisTalisman.getSkill_2();
+	@Override
+	public String getColumnName(int column) {
+		return columnNames[column];
+	}
+
+	@Override
+	public Object getValueAt(int row, int column) {
+		// TODO Auto-generated method stub
+		Talisman tempTalisman = talismanList.get(row);
+
+		switch(column) 
+		{
+			case 0:
+				return tempTalisman.getSkill_1();
+			case 1:
+				return tempTalisman.getSkill1_Value();
+			case 2:
+				return tempTalisman.getSkill_2();
+			case 3:
+				return tempTalisman.getSkill2_Value();
+			case 4:
+				return tempTalisman.getSlots();
+			case 5:
+				return tempTalisman.getRarity();
+			default:
+				return String.class;
+		}
 		
-		if(thisTalisman.getSkill_2() == null)
-			thisObject[2] = "--";
 		
-		thisObject[3] = thisTalisman.getSkill2_Value();
-		thisObject[4] = thisTalisman.getSlots();
-		thisObject[5] = thisTalisman.getRarity();
-		
-		this.addRow(thisObject);
+	}
+	
+	public void addRow(Talisman newTalisman) {
+		talismanList.add(newTalisman);
+		this.fireTableDataChanged();
+	}
+	
+	public void removeRow(int rowIndex) {
+		talismanList.remove(rowIndex);
+		this.fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 	
 	@Override
@@ -80,7 +110,5 @@ public class TalismanTableModel extends DefaultTableModel{
 		}
 		
 	}
-	
-	
 	
 }
