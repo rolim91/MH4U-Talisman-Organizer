@@ -336,7 +336,7 @@ public class MainWindow implements ActionListener, ChangeListener {
 			
 			//add thisTalisman to TalismanList
 			listOfTalismans.addTalisman(thisTalisman);
-			talismanModel.addTalisman(thisTalisman);
+			//talismanModel.addTalisman(thisTalisman);
 		}
 		else
 			System.out.println("Cannot add empty primary skill");

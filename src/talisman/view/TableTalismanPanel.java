@@ -4,16 +4,22 @@ import java.util.Comparator;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import talisman.model.Talisman;
+
 public class TableTalismanPanel extends JPanel {
+	
 	private JTable talismanTable;
 	private TalismanTableModel talismanModel;
-	public TableTalismanPanel() {
+	
+	public TableTalismanPanel(TalismanTableModel talismanModel) {
 		setBorder(new TitledBorder(null, "Talisman List", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -27,10 +33,14 @@ public class TableTalismanPanel extends JPanel {
 				.addComponent(scrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
 		);
 		
-		talismanModel = new TalismanTableModel();
+		this.talismanModel = talismanModel;
 		talismanTable = new JTable(talismanModel);
 		
-		TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(talismanModel);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.RIGHT );
+		talismanTable.setDefaultRenderer(String.class, centerRenderer);
+		
+		/*TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(talismanModel);
 		talismanTable.setRowSorter(rowSorter);
 		
 		//set comparator for  3rd column, to output ordered strings
@@ -49,10 +59,11 @@ public class TableTalismanPanel extends JPanel {
 				
 				return o1.compareTo(o2);
 			}
-		});
+		});*/
 		
 		scrollPane.setViewportView(talismanTable);
 		setLayout(groupLayout);
 		
 	}
+	
 }
