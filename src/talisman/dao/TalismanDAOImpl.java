@@ -51,7 +51,7 @@ public class TalismanDAOImpl implements TalismanDAO {
 	                   	" Skill1_Value 			INT 	NOT NULL, " + 
 	                   	" Skill_2 				TEXT 	NOT NULL, " + 
 	                   	" Skill2_Value 			INT 	NOT NULL, " +
-	                   	" Slots 					INT 	NOT NULL, " + 
+	                   	" Slots 				INT 	NOT NULL, " + 
 	                   	" Rarity 				INT, " + 
 	                   	" Type 					INT 	NOT NULL) ";
 	    	stmt.executeUpdate(sql);
@@ -238,14 +238,14 @@ public class TalismanDAOImpl implements TalismanDAO {
 	}
 	
 	@Override
-	public void deleteThenInsert(Talisman talisman) {
+	public void deleteThenInsert(Talisman talisman, int index) {
 		// TODO Auto-generated method stub
 		if(talisman.getType() == 1)
 			this.deleteThenInsertSingle(talisman);
 		else
 			this.deleteThenInsertDouble(talisman);
 		
-		insertTalisman(talisman);
+		insertTalisman(talisman, index);
 	}
 	
 	private void deleteThenInsertSingle(Talisman talisman)
@@ -288,9 +288,30 @@ public class TalismanDAOImpl implements TalismanDAO {
 	}
 	
 	@Override
-	public void insertTalisman(Talisman talisman) {
+	public void insertTalisman(Talisman talisman, int index) {
 		// TODO Auto-generated method stub
+		Statement stmt = null;
 		
+		
+		try {
+			
+			stmt = c.createStatement();
+			String sql = 	"INSERT INTO talisman_list (talismanID, Skill_1, Skill1_Value, Skill_2, Skill2_Value, Slots, Rarity, Type)"  +
+							"VALUES (" + 	index + ", " + 
+											talisman.getSkill_1() + ", " + 
+											talisman.getSkill1_Value() + ", " + 
+											talisman.getSkill_2() + ", " + 
+											talisman.getSkill2_Value() + ", " + 
+											talisman.getSlots() + ", " + 
+											talisman.getRarity() + ", " + 
+											talisman.getType() + ")";
+			
+			stmt.executeUpdate(sql);
+			
+		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      System.exit(0);
+		}
 
 	}
 
