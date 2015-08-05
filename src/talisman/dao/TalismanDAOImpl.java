@@ -16,7 +16,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 		this.createTable();
 	}
 	
-	public void createDatabase()
+	/*
+	 * Create the sqlite database
+	 */
+	private void createDatabase()
 	{
 		//setup SQLite 
 		File f = new File("TalismanDatabase.sqlite");
@@ -38,6 +41,9 @@ public class TalismanDAOImpl implements TalismanDAO {
 	    System.out.println("Opened database successfully");
 	}
 	
+	/*
+	 * Create the talisman table of the sqlite database
+	 */
 	public void createTable()
 	{
 		Statement stmt = null;
@@ -64,7 +70,12 @@ public class TalismanDAOImpl implements TalismanDAO {
 	    System.out.println("Table created successfully");
 	}
 	
+	
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see talisman.dao.TalismanDAO#deleteTalisman(talisman.model.Talisman)
+	 */
 	public void deleteTalisman(Talisman talisman) {
 		// TODO Auto-generated method stub
 		int id = talisman.getId();
@@ -87,6 +98,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 	}
 
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see talisman.dao.TalismanDAO#checkInsert(talisman.model.Talisman)
+	 */
 	public List<Talisman> checkInsert(Talisman talisman) {
 		
 		if(talisman.getType() == 1)
@@ -95,8 +110,14 @@ public class TalismanDAOImpl implements TalismanDAO {
 			return checkInsertDouble(talisman);
 	}
 	
+	/*
+	 * Queries database to check if the single talisman is a valid input
+	 * @param talisman - using the talisman parameter, check if the talisman should be inserted or not
+	 * @return null if talisman cannot be inserted, List<Talisman> that needs to be deleted before given talisman is inserted
+	 */
 	private List<Talisman> checkInsertSingle(Talisman talisman)
 	{
+		System.out.println("checkInsertSingle");
 	
 		Statement stmt = null;
 	
@@ -114,7 +135,9 @@ public class TalismanDAOImpl implements TalismanDAO {
 			rs.next();
 			int rowCount = rs.getInt(1);
 			
-			if(rowCount == 0)
+			//System.out.println(rowCount);
+			
+			if(rowCount > 0)
 				return null;
 			else
 				return this.checkDeleteSingle(talisman);
@@ -126,6 +149,11 @@ public class TalismanDAOImpl implements TalismanDAO {
 		return null;
 	}
 	
+	/*
+	 * Retrieves a list of Talisman that is in conflict with the talisman parameter
+	 * @param talisman - talisman reference
+	 * @return List<Talisman> a list of conflicting talisman
+	 */
 	private List<Talisman> checkDeleteSingle(Talisman talisman)
 	{
 		
@@ -152,6 +180,11 @@ public class TalismanDAOImpl implements TalismanDAO {
 		return null;
 	}
 	
+	/*
+	 * Convert the ResultSet parameter into a List of Talisman Objects
+	 * @param ResultSet rs - a ResultSet of the returned query from the database
+	 * @return List<Talisman> a list of Talisman from the ResultSet
+	 */
 	private List<Talisman> convertToTalismanList(ResultSet rs)
 	{
 		List<Talisman> talismanList = new ArrayList<Talisman>();
@@ -176,13 +209,20 @@ public class TalismanDAOImpl implements TalismanDAO {
 		    System.exit(0);
 		}
 		
+		System.out.println("Size is: " + talismanList.size());
 		return talismanList;
 	}
 
-	
+	/*
+	 * Queries database to check if the single talisman is a valid input
+	 * @param talisman - using the talisman parameter, check if the talisman should be inserted or not
+	 * @return null if talisman cannot be inserted, List<Talisman> that needs to be deleted before given talisman is inserted
+	 */
 	private List<Talisman> checkInsertDouble(Talisman talisman)
 	{
 		Statement stmt = null;
+		
+		System.out.println("checkInsertDouble");
 		
 		//create and execute query
 		try {
@@ -197,7 +237,9 @@ public class TalismanDAOImpl implements TalismanDAO {
 			rs.next();
 			int rowCount = rs.getInt(1);
 			
-			if(rowCount == 0)
+			System.out.println(rowCount);
+			
+			if(rowCount > 0)
 				return null;
 			else
 				return this.checkDeleteDouble(talisman);
@@ -209,6 +251,11 @@ public class TalismanDAOImpl implements TalismanDAO {
 		return null;
 	}
 
+	/*
+	 * Retrieves a list of Talisman that is in conflict with the talisman parameter
+	 * @param talisman - talisman reference
+	 * @return List<Talisman> a list of conflicting talisman
+	 */
 	private List<Talisman> checkDeleteDouble(Talisman talisman) {
 		
 		Statement stmt = null;
@@ -238,6 +285,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 	}
 	
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see talisman.dao.TalismanDAO#deleteThenInsert(talisman.model.Talisman)
+	 */
 	public void deleteThenInsert(Talisman talisman) {
 		// TODO Auto-generated method stub
 		if(talisman.getType() == 1)
@@ -248,6 +299,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 		insertTalisman(talisman);
 	}
 	
+	/*
+	 * Delete the conflicts in the given Single talisman with the list given by checkInsert
+	 * @param talisman - talisman used as a reference of the talisman in the database that is to be deleted
+	 */
 	private void deleteThenInsertSingle(Talisman talisman)
 	{
 		Statement stmt = null;
@@ -266,6 +321,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 		}
 	}
 	
+	/*
+	 * Delete the conflicts in the given Double talisman with the list given by checkInsert
+	 * @param talisman - talisman used as a reference of the talisman in the database that is to be deleted
+	 */
 	private void deleteThenInsertDouble(Talisman talisman)
 	{
 		Statement stmt = null;
@@ -292,7 +351,7 @@ public class TalismanDAOImpl implements TalismanDAO {
 		// TODO Auto-generated method stub
 		Statement stmt = null;
 
-		System.out.println("Inserting talisman: " + talisman);
+		//System.out.println("Inserting talisman: " + talisman);
 		
 		try {
 			
@@ -317,6 +376,10 @@ public class TalismanDAOImpl implements TalismanDAO {
 	}
 
 	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see talisman.dao.TalismanDAO#retrieveList()
+	 */
 	public List<Talisman> retrieveList() {
 		Statement stmt = null;
 		
@@ -338,6 +401,24 @@ public class TalismanDAOImpl implements TalismanDAO {
 		return null;
 	}
 
-
+	/*
+	 * Delete the entries in the table
+	 */
+	public void clearTable() {
+		Statement stmt = null;
+		
+		//create and execute query
+		try {
+			
+			stmt = c.createStatement();
+			String sql = 	"DELETE FROM talisman_list";
+			stmt.executeUpdate(sql);
+			
+			
+		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      System.exit(0);
+		}
+	}
 
 }

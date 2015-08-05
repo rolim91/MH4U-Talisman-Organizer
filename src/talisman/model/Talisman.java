@@ -90,15 +90,14 @@ public class Talisman {
 	}
 
 	
+	
+	
 	@Override
 	public String toString() {
-		return "Talisman [skill_1=" + skill_1 + ", skill_2=" + skill_2
-				+ ", skill1_Value=" + skill1_Value + ", skill2_Value="
-				+ skill2_Value + ", slots=" + slots + ", type=" + type
-				+ ", rarity=" + rarity + "]";
+		return "Talisman [id=" + id + ", skill_1=" + skill_1 + ", skill_2=" + skill_2 + ", skill1_Value=" + skill1_Value
+				+ ", skill2_Value=" + skill2_Value + ", slots=" + slots + ", type=" + type + ", rarity=" + rarity + "]";
 	}
 
-	
 	public int compare(Talisman compTalisman)
 	{
 		
