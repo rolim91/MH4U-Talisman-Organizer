@@ -10,6 +10,8 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JMenuBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import talisman.controller.TalismanController;
+
 
 public class MainTalismanWindow {
 
@@ -18,6 +20,7 @@ public class MainTalismanWindow {
 	private ActionTalismanPanel actionTalismanPanel;
 	private TableTalismanPanel tableTalismanPanel;
 	private TalismanTableModel talismanTableModel;
+	private TalismanController talismanController;
 	
 	/**
 	 * Launch the application.
@@ -51,7 +54,7 @@ public class MainTalismanWindow {
 		
 		frmMonsterHunter = new JFrame();
 		frmMonsterHunter.setTitle("Monster Hunter 4 Talisman Organizer");
-		frmMonsterHunter.setBounds(100, 100, 709, 541);
+		frmMonsterHunter.setBounds(100, 100, 819, 612);
 		frmMonsterHunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		addTalismanPanel = new AddTalismanPanel();
@@ -88,6 +91,8 @@ public class MainTalismanWindow {
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmMonsterHunter.setJMenuBar(menuBar);
+		
+		talismanController = new TalismanController(actionTalismanPanel, addTalismanPanel, tableTalismanPanel, talismanTableModel);
 	}
 	
 	
@@ -110,4 +115,6 @@ public class MainTalismanWindow {
 		    }
 			
 	}
+	
+	
 }

@@ -3,7 +3,6 @@ package talisman.view;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
-import java.awt.GridLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
@@ -11,33 +10,51 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
 
+@SuppressWarnings("rawtypes")
 public class AddTalismanPanel extends JPanel {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	private JSpinner primarySpinner; 
+	private JSpinner secondarySpinner;
+	
+	private JComboBox primarySkillBox; 
+	private JComboBox secondarySkillBox; 
+	private JSpinner slotSpinner;
+	private JSpinner raritySpinner;
+	
+	JButton addTalismanButton;
+	
 	public AddTalismanPanel() {
 		setBorder(new TitledBorder(null, "Add Talisman", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		
 		JLabel primaryLabel = new JLabel("Primary Skill");
 		
-		JSpinner primarySpinner = new JSpinner();
+		primarySpinner = new JSpinner();
 		
 		JLabel secondaryLabel = new JLabel("Secondary Skill");
 		
-		JSpinner secondarySpinner = new JSpinner();
+		secondarySpinner = new JSpinner();
 		
-		JComboBox primarySkillBox = new JComboBox();
+		primarySkillBox = new JComboBox();
 		primarySkillBox.setToolTipText("Primary Skill");
 		
-		JComboBox secondarySkillBox = new JComboBox();
+		secondarySkillBox = new JComboBox();
 		secondarySkillBox.setToolTipText("Secondary Skill");
 		
-		JSpinner slotSpinner = new JSpinner();
+		slotSpinner = new JSpinner();
 		
 		JLabel slotLabel = new JLabel("Slots");
 		
 		JLabel rarityLabel = new JLabel("Rarity");
 		
-		JSpinner raritySpinner = new JSpinner();
+		raritySpinner = new JSpinner();
 		
-		JButton addTalismanButton = new JButton("Add Talisman");
+		addTalismanButton = new JButton("Add Talisman");
+		
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -91,4 +108,38 @@ public class AddTalismanPanel extends JPanel {
 		);
 		setLayout(groupLayout);
 	}
+
+	public JSpinner getPrimarySpinner() {
+		return primarySpinner;
+	}
+
+	public JSpinner getSecondarySpinner() {
+		return secondarySpinner;
+	}
+
+
+	public JComboBox getPrimarySkillBox() {
+		return primarySkillBox;
+	}
+
+
+	public JComboBox getSecondarySkillBox() {
+		return secondarySkillBox;
+	}
+
+
+	public JSpinner getSlotSpinner() {
+		return slotSpinner;
+	}
+
+
+	public JSpinner getRaritySpinner() {
+		return raritySpinner;
+	}
+
+	public JButton getAddTalismanButton() {
+		return addTalismanButton;
+	}
+	
+	
 }
