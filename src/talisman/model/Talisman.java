@@ -2,6 +2,7 @@ package talisman.model;
 
 public class Talisman {
 	
+	private int id;
 	private String skill_1;
 	private String skill_2;
 	private int skill1_Value;
@@ -12,6 +13,7 @@ public class Talisman {
 	
 	public Talisman() {
 		super();
+		this.id = 0;
 		this.skill_1 = "skill_1";
 		this.skill_2 = "skill_2";
 		this.skill1_Value = 0;
@@ -32,9 +34,31 @@ public class Talisman {
 		this.rarity = rarity;
 		this.type = 1;
 		
-		if(skill_2 != null)
+		if(!skill_2.equals("--"))
 			this.type = 2;
 		
+	}
+	
+	public Talisman(int id, String skill_1, String skill_2, int skill1_Value, int skill2_Value, int slots, int rarity) {
+		super();
+		
+		this.id = id;
+		this.skill_1 = skill_1;
+		this.skill_2 = skill_2;
+		this.skill1_Value = skill1_Value;
+		this.skill2_Value = skill2_Value;
+		this.slots = slots;
+		this.rarity = rarity;
+		this.type = 1;
+		
+		if(!skill_2.equals("--"))
+			this.type = 2;
+		
+	}
+	
+
+	public int getId() {
+		return id;
 	}
 
 	public String getSkill_1() {
@@ -66,15 +90,14 @@ public class Talisman {
 	}
 
 	
+	
+	
 	@Override
 	public String toString() {
-		return "Talisman [skill_1=" + skill_1 + ", skill_2=" + skill_2
-				+ ", skill1_Value=" + skill1_Value + ", skill2_Value="
-				+ skill2_Value + ", slots=" + slots + ", type=" + type
-				+ ", rarity=" + rarity + "]";
+		return "Talisman [id=" + id + ", skill_1=" + skill_1 + ", skill_2=" + skill_2 + ", skill1_Value=" + skill1_Value
+				+ ", skill2_Value=" + skill2_Value + ", slots=" + slots + ", type=" + type + ", rarity=" + rarity + "]";
 	}
 
-	
 	public int compare(Talisman compTalisman)
 	{
 		
@@ -323,5 +346,6 @@ public class Talisman {
 		
 		return 0;
 	}
+
 	
 }
