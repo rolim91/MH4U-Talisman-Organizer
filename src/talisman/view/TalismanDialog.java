@@ -7,17 +7,22 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JTable;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Comparator;
 import java.awt.event.ActionEvent;
+import javax.swing.JPanel;
 
 public class TalismanDialog extends JDialog {
 	
 	private JTable table;
 	private TalismanTableModel deleteTalismanModel;
-	JButton doneButton;
+	private JButton doneButton;
+	private JButton cancelButton;
 	
 	
 	public TalismanDialog(TalismanTableModel talismanModel) {
@@ -31,22 +36,45 @@ public class TalismanDialog extends JDialog {
 		
 		this.deleteTalismanModel = talismanModel;
 		table = new JTable(deleteTalismanModel);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment( JLabel.RIGHT );
+		table.setDefaultRenderer(String.class, centerRenderer);
 		scrollPane.setViewportView(table);
 		
-		doneButton = new JButton("Done");
+		TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(deleteTalismanModel);
+		table.setRowSorter(rowSorter);
+		
+		//set comparator for  3rd column, to output ordered strings
+		rowSorter.setComparator(2, new Comparator<String>() {
+			@Override
+			public int compare(String o1, String o2) {
+				
+				System.out.println(o1);
+				
+				if(o1.equals("--") && o2.equals("--"))
+					return 0;
+				else if(o1.equals("--"))
+					return 1;
+				else if(o2.equals("--"))
+					return -1;
+				
+				return o1.compareTo(o2);
+			}
+		});
+		
+		JPanel panel = new JPanel();
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
-						.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
-					.addContainerGap())
-				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(228)
-					.addComponent(doneButton, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGap(227))
+						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED))
+						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE))
+					.addGap(17))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -54,11 +82,17 @@ public class TalismanDialog extends JDialog {
 					.addContainerGap()
 					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(doneButton)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
+		
+		doneButton = new JButton("Done");
+		panel.add(doneButton);
+		
+		cancelButton = new JButton("Cancel");
+		panel.add(cancelButton);
 		
 		
 		getContentPane().setLayout(groupLayout);
@@ -72,6 +106,11 @@ public class TalismanDialog extends JDialog {
 
 	public void setDeleteTalismanModel(TalismanTableModel deleteTalismanModel) {
 		this.deleteTalismanModel = deleteTalismanModel;
+	}
+
+
+	public JButton getCancelButton() {
+		return cancelButton;
 	}
 	
 	

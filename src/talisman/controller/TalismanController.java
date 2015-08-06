@@ -34,6 +34,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	private TalismanTableModel talismanTableModel;
 	private TalismanDialog deleteDialog;
 	private TalismanTableModel deleteTableModel;
+	private TalismanMenuBar talismanMenuBar;
 	
 	//Database Variables
 	private TalismanDAOImpl talismanDAOImpl;
@@ -42,13 +43,14 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	private int id = 0;
 	private Talisman currentTalisman;
 	
-	public TalismanController(ActionTalismanPanel actionTalismanPanel, AddTalismanPanel addTalismanPanel, TableTalismanPanel tableTalismanPanel, TalismanTableModel talismanTableModel) {
+	public TalismanController(ActionTalismanPanel actionTalismanPanel, AddTalismanPanel addTalismanPanel, TableTalismanPanel tableTalismanPanel, TalismanTableModel talismanTableModel, TalismanMenuBar talismanMenuBar) {
 		
 		//set the variables
 		this.actionTalismanPanel = actionTalismanPanel;
 		this.addTalismanPanel = addTalismanPanel;
 		this.tableTalismanPanel = tableTalismanPanel;
 		this.talismanTableModel = talismanTableModel;
+		this.talismanMenuBar = talismanMenuBar;
 		this.talismanDAOImpl = new TalismanDAOImpl();
 		this.deleteTableModel = new TalismanTableModel();
 		this.deleteDialog = new TalismanDialog(this.deleteTableModel);
@@ -58,94 +60,6 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 		//initialize listeners
 		this.initListeners();
-		
-	}
-	
-	
-	
-
-	@Override
-	public void stateChanged(ChangeEvent arg0) {
-		
-		//Check if valid value is placed in primarySpinner
-				if(arg0.getSource() == this.addTalismanPanel.getPrimarySpinner())
-				{
-					int value = (int)this.addTalismanPanel.getPrimarySpinner().getValue();
-					int index = this.addTalismanPanel.getPrimarySkillBox().getSelectedIndex();
-					
-					if(value < primarySkill.get(index).getMin())
-						this.addTalismanPanel.getPrimarySpinner().setValue(primarySkill.get(index).getMin());
-					else if(value > primarySkill.get(index).getMax())
-						this.addTalismanPanel.getPrimarySpinner().setValue(primarySkill.get(index).getMax());
-					
-					//System.out.println(this.addTalismanPanel.getPrimarySpinner().getValue());
-				}
-				//Check if valid value is placed in secondarySpinner
-				else if(arg0.getSource() == this.addTalismanPanel.getSecondarySpinner())
-				{
-					int value = (int)this.addTalismanPanel.getSecondarySpinner().getValue();
-					int index = this.addTalismanPanel.getSecondarySkillBox().getSelectedIndex();
-					
-					if(value < secondarySkill.get(index).getMin())
-						this.addTalismanPanel.getSecondarySpinner().setValue(secondarySkill.get(index).getMin());
-					else if(value > secondarySkill.get(index).getMax())
-						this.addTalismanPanel.getSecondarySpinner().setValue(secondarySkill.get(index).getMax());
-					
-					//System.out.println(this.addTalismanPanel.getSecondarySpinner().getValue());
-				}
-				else if(arg0.getSource() == this.addTalismanPanel.getRaritySpinner())
-				{
-					int value = (int)this.addTalismanPanel.getRaritySpinner().getValue();
-					
-					if(value < 1)
-						this.addTalismanPanel.getRaritySpinner().setValue(1);
-					else if(value > 10)
-						this.addTalismanPanel.getRaritySpinner().setValue(10);
-					
-				}
-				else if(arg0.getSource() ==  this.addTalismanPanel.getSlotSpinner())
-				{
-					int value = (int)this.addTalismanPanel.getSlotSpinner().getValue();
-					
-					if(value < 0)
-						this.addTalismanPanel.getSlotSpinner().setValue(0);
-					else if(value > 3)
-						this.addTalismanPanel.getSlotSpinner().setValue(3);
-					
-				}
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
-		if(arg0.getSource() == this.addTalismanPanel.getPrimarySkillBox())
-		{
-			int index = this.addTalismanPanel.getPrimarySkillBox().getSelectedIndex();
-			handleSkillBoxActions(this.addTalismanPanel.getPrimarySpinner(), primarySkill, index);
-			
-			//System.out.println("Primary Skill: " + String.valueOf(this.addTalismanPanel.getPrimarySkillBox().getSelectedItem()));
-		}
-		else if(arg0.getSource() ==  this.addTalismanPanel.getSecondarySkillBox())
-		{
-			int index = this.addTalismanPanel.getSecondarySkillBox().getSelectedIndex();
-			handleSkillBoxActions(this.addTalismanPanel.getPrimarySpinner(), secondarySkill, index);
-			
-			//System.out.println("Secondary Skill: " + String.valueOf(this.addTalismanPanel.getSecondarySkillBox().getSelectedItem()));
-		}
-		else if(arg0.getSource() == this.addTalismanPanel.getAddTalismanButton())
-		{
-			System.out.println("Add Talisman");
-			addTalisman();
-		}
-		else if(arg0.getSource() == this.deleteDialog.getDoneButton())
-		{
-			deleteDialog.setVisible(true);
-			this.talismanDAOImpl.insertTalisman(currentTalisman);
-			this.talismanTableModel.addTalismanList(this.talismanDAOImpl.retrieveList());
-			this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
-			currentTalisman = null;
-		}
 		
 	}
 	
@@ -163,6 +77,115 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		addTalismanPanel.getSlotSpinner().addChangeListener(this);
 		addTalismanPanel.getRaritySpinner().addChangeListener(this);
 		deleteDialog.getDoneButton().addActionListener(this);
+		deleteDialog.getCancelButton().addActionListener(this);
+		deleteDialog.addWindowListener(this);
+		talismanMenuBar.getSaveItem().addActionListener(this);
+		talismanMenuBar.getLoadItem().addActionListener(this);
+		talismanMenuBar.getExitItem().addActionListener(this);
+	}
+
+	@Override
+	public void stateChanged(ChangeEvent arg0) {
+		
+		//Check if valid value is placed in primarySpinner
+		if(arg0.getSource() == this.addTalismanPanel.getPrimarySpinner())
+		{
+			int value = (int)this.addTalismanPanel.getPrimarySpinner().getValue();
+			int index = this.addTalismanPanel.getPrimarySkillBox().getSelectedIndex();
+			
+			if(value < primarySkill.get(index).getMin())
+				this.addTalismanPanel.getPrimarySpinner().setValue(primarySkill.get(index).getMin());
+			else if(value > primarySkill.get(index).getMax())
+				this.addTalismanPanel.getPrimarySpinner().setValue(primarySkill.get(index).getMax());
+			
+			//System.out.println(this.addTalismanPanel.getPrimarySpinner().getValue());
+		}
+		//Check if valid value is placed in secondarySpinner
+		else if(arg0.getSource() == this.addTalismanPanel.getSecondarySpinner())
+		{
+			int value = (int)this.addTalismanPanel.getSecondarySpinner().getValue();
+			int index = this.addTalismanPanel.getSecondarySkillBox().getSelectedIndex();
+			
+			if(value < secondarySkill.get(index).getMin())
+				this.addTalismanPanel.getSecondarySpinner().setValue(secondarySkill.get(index).getMin());
+			else if(value > secondarySkill.get(index).getMax())
+				this.addTalismanPanel.getSecondarySpinner().setValue(secondarySkill.get(index).getMax());
+			
+			//System.out.println(this.addTalismanPanel.getSecondarySpinner().getValue());
+		}
+		else if(arg0.getSource() == this.addTalismanPanel.getRaritySpinner())
+		{
+			int value = (int)this.addTalismanPanel.getRaritySpinner().getValue();
+			
+			if(value < 1)
+				this.addTalismanPanel.getRaritySpinner().setValue(1);
+			else if(value > 10)
+				this.addTalismanPanel.getRaritySpinner().setValue(10);
+			
+		}
+		else if(arg0.getSource() ==  this.addTalismanPanel.getSlotSpinner())
+		{
+			int value = (int)this.addTalismanPanel.getSlotSpinner().getValue();
+			
+			if(value < 0)
+				this.addTalismanPanel.getSlotSpinner().setValue(0);
+			else if(value > 3)
+				this.addTalismanPanel.getSlotSpinner().setValue(3);
+			
+		}
+
+	}
+	
+	
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+
+		if(arg0.getSource() == this.addTalismanPanel.getPrimarySkillBox())
+		{
+			int index = this.addTalismanPanel.getPrimarySkillBox().getSelectedIndex();
+			handleSkillBoxActions(this.addTalismanPanel.getPrimarySpinner(), primarySkill, index);
+			
+			//System.out.println("Primary Skill: " + String.valueOf(this.addTalismanPanel.getPrimarySkillBox().getSelectedItem()));
+		}
+		else if(arg0.getSource() ==  this.addTalismanPanel.getSecondarySkillBox())
+		{
+			int index = this.addTalismanPanel.getSecondarySkillBox().getSelectedIndex();
+			handleSkillBoxActions(this.addTalismanPanel.getSecondarySpinner(), secondarySkill, index);
+			
+			//System.out.println("Secondary Skill: " + String.valueOf(this.addTalismanPanel.getSecondarySkillBox().getSelectedItem()));
+		}
+		else if(arg0.getSource() == this.addTalismanPanel.getAddTalismanButton())
+		{
+			System.out.println("Add Talisman");
+			addTalisman();
+		}
+		else if(arg0.getSource() == this.deleteDialog.getDoneButton())
+		{
+			deleteDialog.setVisible(false);
+			this.talismanDAOImpl.deleteThenInsert(currentTalisman);
+			this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
+			this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
+			currentTalisman = null;
+		}
+		else if(arg0.getSource() == this.deleteDialog.getCancelButton())
+		{
+			this.cancelOperation();
+		}
+		else if(arg0.getSource() == this.talismanMenuBar.getSaveItem())
+		{
+			System.out.println("Save Item");
+		}
+		else if(arg0.getSource() == this.talismanMenuBar.getLoadItem())
+		{
+			System.out.println("Load Item");
+		}
+		else if(arg0.getSource() == this.talismanMenuBar.getExitItem())
+		{
+			System.out.println("Exit Item");
+			System.exit(0);
+		}
+		
 	}
 	
 	/*
@@ -249,7 +272,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		int slot = (Integer)this.addTalismanPanel.getSlotSpinner().getValue();
 		int rarity = (Integer)this.addTalismanPanel.getRaritySpinner().getValue();
 		
-		id++;
+		this.id++;
 		
 		return new Talisman(id, skill_1, skill_2, skill1_val, skill2_val, slot, rarity);
 	}
@@ -269,19 +292,18 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 				JFrame frame = new JFrame("Message");
 				JOptionPane.showMessageDialog(frame, "Talisman can be kept. No conflicting talismans found.");
 				this.talismanDAOImpl.insertTalisman(currentTalisman);
-				this.talismanTableModel.addTalismanList(this.talismanDAOImpl.retrieveList());
+				this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
 				currentTalisman = null;
 			}
 			else
 			{
 				this.showDeleteTalisman(deleteTalisman);
-				this.talismanDAOImpl.deleteThenInsert(currentTalisman);
 			}
 		}
 		else
 		{
 			//DIALOG saying "There is a Talisman with higher value."
-			id--;
+			this.id--;
 			JFrame frame = new JFrame("Message");
 			JOptionPane.showMessageDialog(frame, "There is a Talisman with higher value.");
 			currentTalisman = null;
@@ -293,7 +315,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	 */
 	private void showDeleteTalisman(List<Talisman> deleteTalisman)
 	{
-		deleteTableModel.addTalismanList(deleteTalisman);
+		deleteTableModel.refreshTalismanList(deleteTalisman);
 		deleteDialog.setDeleteTalismanModel(deleteTableModel);
 		deleteDialog.pack();
 		this.addTalismanPanel.getAddTalismanButton().setEnabled(false);
@@ -324,7 +346,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	@Override
 	public void windowClosing(WindowEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		this.cancelOperation();
 	}
 
 
@@ -361,5 +383,12 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	public void windowOpened(WindowEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void cancelOperation()
+	{
+		deleteDialog.setVisible(false);
+		this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
+		currentTalisman = null;
 	}
 }
