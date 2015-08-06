@@ -9,10 +9,11 @@ public class TalismanMenuBar extends JMenuBar {
 	private JMenuItem saveItem;
 	private JMenuItem loadItem;
 	private JMenuItem exitItem;
+	private JMenu mnFile;
 	
 	public TalismanMenuBar() {
 		
-		JMenu mnFile = new JMenu("File");
+		mnFile = new JMenu("File");
 		add(mnFile);
 		
 		saveItem = new JMenuItem("Save");
@@ -23,6 +24,10 @@ public class TalismanMenuBar extends JMenuBar {
 		
 		exitItem = new JMenuItem("Exit");
 		mnFile.add(exitItem);
+	}
+	
+	public JMenu getMnFile() {
+		return mnFile;
 	}
 
 	public JMenuItem getSaveItem() {
@@ -36,5 +41,7 @@ public class TalismanMenuBar extends JMenuBar {
 	public JMenuItem getExitItem() {
 		return exitItem;
 	}
+
+	
 
 }
