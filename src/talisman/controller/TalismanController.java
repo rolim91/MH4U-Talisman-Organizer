@@ -43,6 +43,25 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	private int id = 0;
 	private Talisman currentTalisman;
 	
+	public TalismanController(ActionTalismanPanel actionTalismanPanel, AddTalismanPanel addTalismanPanel, TableTalismanPanel tableTalismanPanel, TalismanTableModel talismanTableModel) {
+		
+		//set the variables
+		this.actionTalismanPanel = actionTalismanPanel;
+		this.addTalismanPanel = addTalismanPanel;
+		this.tableTalismanPanel = tableTalismanPanel;
+		this.talismanTableModel = talismanTableModel;
+		this.talismanDAOImpl = new TalismanDAOImpl();
+		this.deleteTableModel = new TalismanTableModel();
+		this.deleteDialog = new TalismanDialog(this.deleteTableModel);
+		
+		//initialize variables
+		this.initVariables();
+		
+		//initialize listeners
+		this.initListeners();
+		
+	}
+	
 	public TalismanController(ActionTalismanPanel actionTalismanPanel, AddTalismanPanel addTalismanPanel, TableTalismanPanel tableTalismanPanel, TalismanTableModel talismanTableModel, TalismanMenuBar talismanMenuBar) {
 		
 		//set the variables
