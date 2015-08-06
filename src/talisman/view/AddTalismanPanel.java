@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JComboBox;
+import javax.swing.SpinnerNumberModel;
 
 @SuppressWarnings("rawtypes")
 public class AddTalismanPanel extends JPanel {
@@ -52,6 +53,7 @@ public class AddTalismanPanel extends JPanel {
 		JLabel rarityLabel = new JLabel("Rarity");
 		
 		raritySpinner = new JSpinner();
+		raritySpinner.setModel(new SpinnerNumberModel(new Integer(1), null, null, new Integer(1)));
 		
 		addTalismanButton = new JButton("Add Talisman");
 		

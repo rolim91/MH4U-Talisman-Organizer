@@ -40,7 +40,7 @@ public class TableTalismanPanel extends JPanel {
 		centerRenderer.setHorizontalAlignment( JLabel.RIGHT );
 		talismanTable.setDefaultRenderer(String.class, centerRenderer);
 		
-		/*TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(talismanModel);
+		TableRowSorter<TalismanTableModel> rowSorter = new TableRowSorter<TalismanTableModel>(talismanModel);
 		talismanTable.setRowSorter(rowSorter);
 		
 		//set comparator for  3rd column, to output ordered strings
@@ -59,7 +59,7 @@ public class TableTalismanPanel extends JPanel {
 				
 				return o1.compareTo(o2);
 			}
-		});*/
+		});
 		
 		scrollPane.setViewportView(talismanTable);
 		setLayout(groupLayout);

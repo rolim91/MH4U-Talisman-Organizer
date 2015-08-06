@@ -11,6 +11,8 @@ import javax.swing.JMenuBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import talisman.controller.TalismanController;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 
 public class MainTalismanWindow {
@@ -21,6 +23,7 @@ public class MainTalismanWindow {
 	private TableTalismanPanel tableTalismanPanel;
 	private TalismanTableModel talismanTableModel;
 	private TalismanController talismanController;
+	private TalismanMenuBar talismanMenuBar;
 	
 	/**
 	 * Launch the application.
@@ -66,33 +69,34 @@ public class MainTalismanWindow {
 		GroupLayout groupLayout = new GroupLayout(frmMonsterHunter.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(addTalismanPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(actionTalismanPanel, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE))
-						.addComponent(addTalismanPanel, GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE))
+							.addComponent(actionTalismanPanel, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE)
-						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, 264, Short.MAX_VALUE))
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
+						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
 		
-		JMenuBar menuBar = new JMenuBar();
-		frmMonsterHunter.setJMenuBar(menuBar);
+		talismanMenuBar = new TalismanMenuBar();
+		frmMonsterHunter.setJMenuBar(talismanMenuBar);
 		
-		talismanController = new TalismanController(actionTalismanPanel, addTalismanPanel, tableTalismanPanel, talismanTableModel);
+		talismanController = new TalismanController(actionTalismanPanel, addTalismanPanel, tableTalismanPanel, talismanTableModel, talismanMenuBar);
+		
 	}
 	
 	

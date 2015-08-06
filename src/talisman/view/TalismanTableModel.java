@@ -33,6 +33,7 @@ public class TalismanTableModel extends AbstractTableModel{
 	{
 		super();
 		this.talismanList = talismanList;
+		
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class TalismanTableModel extends AbstractTableModel{
 		this.fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 	
-	public void addTalismanList(List<Talisman> talismanList)
+	public void refreshTalismanList(List<Talisman> talismanList)
 	{
 		this.talismanList = talismanList;
 		
