@@ -88,6 +88,13 @@ public class TalismanTableModel extends AbstractTableModel{
 		this.fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 	
+	public void addTalismanList(List<Talisman> talismanList)
+	{
+		this.talismanList = talismanList;
+		
+		this.fireTableDataChanged();
+	}
+	
 	@Override
 	public Class<?> getColumnClass(int colNum) {
 		

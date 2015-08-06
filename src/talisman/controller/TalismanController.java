@@ -2,19 +2,26 @@ package talisman.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import skill.Skill;
+import talisman.dao.TalismanDAOImpl;
+import talisman.model.Talisman;
 import talisman.view.*;
 import utilities.Utils;
 
-public class TalismanController implements ActionListener, ChangeListener {
+public class TalismanController implements ActionListener, ChangeListener, WindowListener {
 
 	//Support Variables
 	private static String skillListLocation = "bin/resources/skill.txt";
@@ -25,8 +32,15 @@ public class TalismanController implements ActionListener, ChangeListener {
 	private AddTalismanPanel addTalismanPanel;
 	private TableTalismanPanel tableTalismanPanel;
 	private TalismanTableModel talismanTableModel;
+	private TalismanDialog deleteDialog;
+	private TalismanTableModel deleteTableModel;
+	
+	//Database Variables
+	private TalismanDAOImpl talismanDAOImpl;
 	
 	//Add Talisman Variables
+	private int id = 0;
+	private Talisman currentTalisman;
 	
 	public TalismanController(ActionTalismanPanel actionTalismanPanel, AddTalismanPanel addTalismanPanel, TableTalismanPanel tableTalismanPanel, TalismanTableModel talismanTableModel) {
 		
@@ -35,6 +49,9 @@ public class TalismanController implements ActionListener, ChangeListener {
 		this.addTalismanPanel = addTalismanPanel;
 		this.tableTalismanPanel = tableTalismanPanel;
 		this.talismanTableModel = talismanTableModel;
+		this.talismanDAOImpl = new TalismanDAOImpl();
+		this.deleteTableModel = new TalismanTableModel();
+		this.deleteDialog = new TalismanDialog(this.deleteTableModel);
 		
 		//initialize variables
 		this.initVariables();
@@ -118,8 +135,16 @@ public class TalismanController implements ActionListener, ChangeListener {
 		}
 		else if(arg0.getSource() == this.addTalismanPanel.getAddTalismanButton())
 		{
-			//addTalisman();
 			System.out.println("Add Talisman");
+			addTalisman();
+		}
+		else if(arg0.getSource() == this.deleteDialog.getDoneButton())
+		{
+			deleteDialog.setVisible(true);
+			this.talismanDAOImpl.insertTalisman(currentTalisman);
+			this.talismanTableModel.addTalismanList(this.talismanDAOImpl.retrieveList());
+			this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
+			currentTalisman = null;
 		}
 		
 	}
@@ -137,6 +162,7 @@ public class TalismanController implements ActionListener, ChangeListener {
 		addTalismanPanel.getSecondarySpinner().addChangeListener(this);
 		addTalismanPanel.getSlotSpinner().addChangeListener(this);
 		addTalismanPanel.getRaritySpinner().addChangeListener(this);
+		deleteDialog.getDoneButton().addActionListener(this);
 	}
 	
 	/*
@@ -192,5 +218,148 @@ public class TalismanController implements ActionListener, ChangeListener {
 		thisSpinner.setValue(thisSkillList.get(index).getMin());
 		
 		return tempString;
+	}
+	
+	private void addTalisman()
+	{
+		if(!String.valueOf(this.addTalismanPanel.getPrimarySkillBox().getSelectedItem()).equals("--"))
+		{
+			currentTalisman = this.createTalisman();
+			//System.out.println(insertTalisman);
+			this.insertTalisman();
+			
+		}
+		else
+		{
+			JFrame frame = new JFrame("Message");
+			JOptionPane.showMessageDialog(frame, "Cannot add Talisman with empty primary skill.");
+		}
+	}
+	
+	/*
+	 * Create talisman from the set of AddTalismanPanel variables
+	 */
+	private Talisman createTalisman()
+	{
+		int id = this.id;
+		String skill_1 = String.valueOf(this.addTalismanPanel.getPrimarySkillBox().getSelectedItem());
+		String skill_2 = String.valueOf(this.addTalismanPanel.getSecondarySkillBox().getSelectedItem());
+		int skill1_val = (Integer)this.addTalismanPanel.getPrimarySpinner().getValue();
+		int skill2_val = (Integer)this.addTalismanPanel.getSecondarySpinner().getValue();
+		int slot = (Integer)this.addTalismanPanel.getSlotSpinner().getValue();
+		int rarity = (Integer)this.addTalismanPanel.getRaritySpinner().getValue();
+		
+		id++;
+		
+		return new Talisman(id, skill_1, skill_2, skill1_val, skill2_val, slot, rarity);
+	}
+	
+	/*
+	 * Try to insert the talisman
+	 */
+	private void insertTalisman()
+	{
+		List<Talisman> deleteTalisman = talismanDAOImpl.checkInsert(currentTalisman);
+		
+		//Check if talisman can be inserted
+		if(deleteTalisman != null)
+		{
+			if(deleteTalisman.isEmpty())
+			{
+				JFrame frame = new JFrame("Message");
+				JOptionPane.showMessageDialog(frame, "Talisman can be kept. No conflicting talismans found.");
+				this.talismanDAOImpl.insertTalisman(currentTalisman);
+				this.talismanTableModel.addTalismanList(this.talismanDAOImpl.retrieveList());
+				currentTalisman = null;
+			}
+			else
+			{
+				this.showDeleteTalisman(deleteTalisman);
+				this.talismanDAOImpl.deleteThenInsert(currentTalisman);
+			}
+		}
+		else
+		{
+			//DIALOG saying "There is a Talisman with higher value."
+			id--;
+			JFrame frame = new JFrame("Message");
+			JOptionPane.showMessageDialog(frame, "There is a Talisman with higher value.");
+			currentTalisman = null;
+		}
+	}
+	
+	/*
+	 * Show Window with talismans that are required to be deleted
+	 */
+	private void showDeleteTalisman(List<Talisman> deleteTalisman)
+	{
+		deleteTableModel.addTalismanList(deleteTalisman);
+		deleteDialog.setDeleteTalismanModel(deleteTableModel);
+		deleteDialog.pack();
+		this.addTalismanPanel.getAddTalismanButton().setEnabled(false);
+		deleteDialog.setVisible(true);
+	}
+
+
+
+
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
