@@ -40,4 +40,14 @@ public interface TalismanDAO {
 	 * Delete all entries from database
 	 */
 	public void clearTable();
+	
+	/*
+	 * Search Single Skill
+	 */
+	public List<Talisman> searchSingle(String singleSkill);
+	
+	/*
+	 * Search Double Skills
+	 */
+	public List<Talisman> searchDouble(String skill_1, String skill_2);
 }

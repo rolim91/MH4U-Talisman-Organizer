@@ -423,4 +423,56 @@ public class TalismanDAOImpl implements TalismanDAO {
 		}
 	}
 
+	@Override
+	public List<Talisman> searchSingle(String singleSkill) {
+		// TODO Auto-generated method stub
+		Statement stmt = null;
+		
+		//create and execute query
+		try {
+			
+			stmt = c.createStatement();
+			
+			String sql = 	"SELECT * " +
+							"FROM talisman_list " +
+							"WHERE (Skill_1 = '" + singleSkill + "') OR (Skill_2 = '" + singleSkill + "')";
+							
+			ResultSet rs = stmt.executeQuery(sql);
+			return this.convertToTalismanList(rs);
+			
+		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      System.exit(0);
+		}
+		
+		return null;
+		
+		
+	}
+
+	@Override
+	public List<Talisman> searchDouble(String skill_1, String skill_2) {
+		
+		Statement stmt = null;
+		
+		//create and execute query
+		try {
+			
+			stmt = c.createStatement();
+			
+			String sql = 	"SELECT * " +
+							"FROM talisman_list " +
+							"WHERE (Skill_1 = '" + skill_1 + "' AND Skill_2 = '" + skill_2 + "') OR (Skill_1 = '" + skill_2 + "' AND Skill_2 = '" + skill_1 + "')";
+							
+			ResultSet rs = stmt.executeQuery(sql);
+			return this.convertToTalismanList(rs);
+			
+		} catch ( Exception e ) {
+		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+		      System.exit(0);
+		}
+		
+		return null;
+	}
+
 }
