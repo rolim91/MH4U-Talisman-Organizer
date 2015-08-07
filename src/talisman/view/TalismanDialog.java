@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 public class TalismanDialog extends JDialog {
 	
 	private JTable table;
+	JLabel dialogLabel;
 	private TalismanTableModel deleteTalismanModel;
 	private JButton doneButton;
 	private JButton cancelButton;
@@ -28,9 +29,9 @@ public class TalismanDialog extends JDialog {
 	public TalismanDialog(TalismanTableModel talismanModel) {
 		setTitle("Delete Talismans");
 		
-		JLabel lblNewLabel = new JLabel("Delete Conflicting Talisman(s) in your game");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		dialogLabel = new JLabel("Delete Conflicting Talisman(s) in your game");
+		dialogLabel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		dialogLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		
@@ -71,7 +72,7 @@ public class TalismanDialog extends JDialog {
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addComponent(panel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
 						.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
-							.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
+							.addComponent(dialogLabel, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED))
 						.addComponent(scrollPane, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE))
 					.addGap(17))
@@ -80,7 +81,7 @@ public class TalismanDialog extends JDialog {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+					.addComponent(dialogLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
 					.addPreferredGap(ComponentPlacement.RELATED)

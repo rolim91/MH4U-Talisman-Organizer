@@ -13,7 +13,6 @@ public class TalismanTableModel extends AbstractTableModel{
 
 
 	private String[] columnNames = 	{ "Skill 1", 	"Value 1", 		"Skill 2", 		"Value 2", 		"Slots", 		"Rarity"};
-	private Class[] columnType = 	{ String.class, Integer.class,  String.class, 	Integer.class, 	Integer.class, 	Integer.class};
 	private List<Talisman> talismanList = new ArrayList<Talisman>();
 	
 	private static final long serialVersionUID = -8854771373861055405L;

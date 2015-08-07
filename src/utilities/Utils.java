@@ -131,4 +131,19 @@ public class Utils {
 		writer.close();
 	}
 	
+	public static ArrayList<String> openFromFile(String filename) throws FileNotFoundException
+	{
+		Scanner lineScanner = new Scanner(new File(filename));
+		ArrayList<String> returnString = new ArrayList<String>();
+		
+		while(lineScanner.hasNextLine())
+		{
+			String addThisString = lineScanner.nextLine();
+			returnString.add(addThisString);
+			//System.out.println(addThisString);
+		}
+		
+		lineScanner.close();
+		return returnString;
+	}
 }
