@@ -35,4 +35,9 @@ public interface TalismanDAO {
 	 * @return List<Talisman> a list of all of the talisman inside the database
 	 */
 	public List<Talisman> retrieveList();
+	
+	/*
+	 * Delete all entries from database
+	 */
+	public void clearTable();
 }

@@ -115,9 +115,20 @@ public class Utils {
 		return skillListArray;
 	}
 	
-	
-	public static void addTalisman()
+	public static void writeToFile(String[] writeStrings, String filename) throws FileNotFoundException, UnsupportedEncodingException
 	{
+		File file = new File(filename);
+		if(file.exists())
+		{
+			file.delete();
+		}
+
+		PrintWriter writer = new PrintWriter(file);
 		
+		for(int i = 0; i < writeStrings.length; i++)
+			writer.println(writeStrings[i]);
+		
+		writer.close();
 	}
+	
 }

@@ -57,7 +57,7 @@ public class MainTalismanWindow {
 		
 		frmMonsterHunter = new JFrame();
 		frmMonsterHunter.setTitle("Monster Hunter 4 Talisman Organizer");
-		frmMonsterHunter.setBounds(100, 100, 819, 612);
+		frmMonsterHunter.setBounds(100, 100, 819, 641);
 		frmMonsterHunter.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		addTalismanPanel = new AddTalismanPanel();
@@ -68,13 +68,13 @@ public class MainTalismanWindow {
 		actionTalismanPanel = new ActionTalismanPanel();
 		GroupLayout groupLayout = new GroupLayout(frmMonsterHunter.getContentPane());
 		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+			groupLayout.createParallelGroup(Alignment.TRAILING)
+				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(addTalismanPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+						.addComponent(addTalismanPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(actionTalismanPanel, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
@@ -83,11 +83,11 @@ public class MainTalismanWindow {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)
+					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
-						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE))
+						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE)
+						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 355, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
