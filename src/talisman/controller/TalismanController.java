@@ -221,11 +221,11 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 		else if(arg0.getSource() == this.actionTalismanPanel.getShowButton())
 		{
-			
+			this.showTable();
 		}
 		else if(arg0.getSource() == this.actionTalismanPanel.getDeleteButton())
 		{
-			
+			this.deleteSelectedTalisman();
 		}
 		
 	}
@@ -235,6 +235,15 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		System.out.println("Search Table"); 
 	}
 	
+	public void showTable()
+	{
+		System.out.println("Show Table");
+	}
+	
+	public void deleteSelectedTalisman()
+	{
+		System.out.println("Delete Talisman");
+	}
 	
 	/*
 	 * Initialize Variables
