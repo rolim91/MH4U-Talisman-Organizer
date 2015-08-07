@@ -401,6 +401,8 @@ public class TalismanDAOImpl implements TalismanDAO {
 		return null;
 	}
 
+
+	@Override
 	/*
 	 * Delete the entries in the table
 	 */

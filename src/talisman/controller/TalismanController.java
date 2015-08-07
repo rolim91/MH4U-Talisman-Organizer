@@ -4,16 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import skill.Skill;
 import talisman.dao.TalismanDAOImpl;
@@ -35,6 +40,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	private TalismanDialog deleteDialog;
 	private TalismanTableModel deleteTableModel;
 	private TalismanMenuBar talismanMenuBar;
+	private JFileChooser fileChooser;
 	
 	//Database Variables
 	private TalismanDAOImpl talismanDAOImpl;
@@ -194,6 +200,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		else if(arg0.getSource() == this.talismanMenuBar.getSaveItem())
 		{
 			System.out.println("Save Item");
+			this.saveTalismans();
 		}
 		else if(arg0.getSource() == this.talismanMenuBar.getLoadItem())
 		{
@@ -205,6 +212,68 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 			System.exit(0);
 		}
 		
+	}
+	
+	
+	private void saveTalismans()
+	{
+		//TEST
+		testSave();
+		
+		//save
+		List<Talisman> saveThis = this.talismanDAOImpl.retrieveList();
+		String[] saveStrings = this.saveToFile(saveThis);
+		fileChooser.showSaveDialog(null);
+		try {
+			String filename = fileChooser.getSelectedFile().getAbsolutePath() + ".txt";
+			this.checkSaveFileExists(filename, saveStrings);
+		} catch ( FileNotFoundException | UnsupportedEncodingException e) {
+			System.out.println("Something went wrong");
+		} catch (NullPointerException e) {
+			System.out.println("Cancelled Operation");
+		}
+	}
+	
+	private void checkSaveFileExists(String filename, String[] saveStrings) throws FileNotFoundException, UnsupportedEncodingException
+	{
+		File f = new File(filename);
+		if(f.exists() && this.fileChooser.getDialogType() == this.fileChooser.SAVE_DIALOG){
+            int result = JOptionPane.showConfirmDialog(null,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
+            switch(result){
+                case JOptionPane.YES_OPTION:
+        			Utils.writeToFile(saveStrings, filename);
+                    return;
+                case JOptionPane.NO_OPTION:
+                    return;
+                case JOptionPane.CLOSED_OPTION:
+                	return;
+                case JOptionPane.CANCEL_OPTION:
+            		fileChooser.showSaveDialog(null);
+            		this.checkSaveFileExists(filename, saveStrings);
+                    return;
+            }
+        }
+		
+		Utils.writeToFile(saveStrings, filename);
+	}
+	
+	private String[] saveToFile(List<Talisman> talisList)
+	{
+		String[] stringList = new String[talisList.size()];
+		
+		for(int i = 0; i < talisList.size(); i++)
+		{
+			stringList[i] = 	talisList.get(i).getSkill_1() + "\t" + 
+								talisList.get(i).getSkill_2() + "\t" + 
+								talisList.get(i).getSkill1_Value() + "\t" + 
+								talisList.get(i).getSkill2_Value() + "\t" + 
+								talisList.get(i).getSlots() + "\t" + 
+								talisList.get(i).getId();
+			
+			System.out.println(stringList[i]);
+		}
+		
+		return stringList;
 	}
 	
 	/*
@@ -223,6 +292,12 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 
 		DefaultComboBoxModel<String> tempSecModel = new DefaultComboBoxModel<String>(Utils.populateSkillArray(secondarySkill));
 		this.addTalismanPanel.getSecondarySkillBox().setModel(tempSecModel);
+		
+		fileChooser = new JFileChooser();
+		fileChooser.setFileFilter(new FileNameExtensionFilter( "Text File", "txt"));
+		File tempFile = new File(".");
+		fileChooser.setCurrentDirectory(tempFile);
+		fileChooser.setSelectedFile(new File("My_Talismans"));
 	}
 	
 	
@@ -409,5 +484,32 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		deleteDialog.setVisible(false);
 		this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
 		currentTalisman = null;
+	}
+	
+	
+	private void testSave()
+	{
+		ArrayList<Talisman> highList = new ArrayList<Talisman>();
+		highList.add(new Talisman(2, "Anti-Theft", "--", 5, 0, 2, 0));
+		highList.add(new Talisman(3, "Anti-Theft", "--", 7, 0, 2, 0));
+		highList.add(new Talisman(4, "Anti-Theft", "--", 7, 0, 3, 0));
+		highList.add(new Talisman(5, "Anti-Theft", "--", 5, 0, 3, 0));
+		
+		highList.add(new Talisman(6, "Attack", "Anti-Theft", 5, 5, 2, 0));
+		highList.add(new Talisman(7, "Attack", "Anti-Theft", 7, 5, 2, 0));
+		highList.add(new Talisman(8, "Attack", "Anti-Theft", 7, 7, 2, 0));
+		highList.add(new Talisman(9, "Attack", "Anti-Theft", 7, 7, 3, 0));
+		highList.add(new Talisman(10, "Attack", "Anti-Theft", 5, 7, 2, 0));
+		highList.add(new Talisman(11, "Attack", "Anti-Theft", 5, 7, 3, 0));
+		highList.add(new Talisman(12, "Attack", "Anti-Theft", 5, 5, 3, 0));
+		highList.add(new Talisman(13, "Anti-Theft", "Attack", 7, 5, 2, 0));
+		
+		addTalismansToDatabase(highList);
+	}
+	
+	private void addTalismansToDatabase(List<Talisman> taliList)
+	{
+		for(int i = 0; i < taliList.size(); i++)
+			this.talismanDAOImpl.insertTalisman(taliList.get(i));
 	}
 }
