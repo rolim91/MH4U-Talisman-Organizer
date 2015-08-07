@@ -65,5 +65,13 @@ public class TableTalismanPanel extends JPanel {
 		setLayout(groupLayout);
 		
 	}
+
+	/**
+	 * @return the talismanTable
+	 */
+	public JTable getTalismanTable() {
+		return talismanTable;
+	}
+	
 	
 }

@@ -232,17 +232,43 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	
 	public void searchTable()
 	{
-		System.out.println("Search Table"); 
+		System.out.println("Search Table");
+		
+		String primaryString = this.actionTalismanPanel.getPrimaryBox().getSelectedItem().toString();
+		String secondaryString = this.actionTalismanPanel.getSecondaryBox().getSelectedItem().toString();
+		
+		if(!primaryString.equals("--"))
+		{
+			List<Talisman> searchResult;
+			
+			if(secondaryString.equals("--"))
+				searchResult = this.talismanDAOImpl.searchSingle(primaryString);
+			else
+				searchResult = this.talismanDAOImpl.searchDouble(primaryString, secondaryString);
+
+			this.talismanTableModel.refreshTalismanList(searchResult);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Cannot search or Talisman(s) with empty primary skill.");
+		}
 	}
 	
 	public void showTable()
 	{
 		System.out.println("Show Table");
+		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
 	}
 	
 	public void deleteSelectedTalisman()
 	{
 		System.out.println("Delete Talisman");
+		int[] rowIndices = this.tableTalismanPanel.getTalismanTable().getSelectedRows();
+		
+		for(int i = 0; i < rowIndices.length; i++)
+		{
+			System.out.println(rowIndices[i]);
+		}
 	}
 	
 	/*
@@ -528,8 +554,6 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	
 	private void saveTalismans()
 	{
-		//TEST
-		//testSave();
 		
 		//save
 		
