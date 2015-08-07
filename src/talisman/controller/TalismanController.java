@@ -9,6 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
 import java.util.ArrayList;
 
 import javax.swing.DefaultComboBoxModel;
@@ -205,6 +207,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		else if(arg0.getSource() == this.talismanMenuBar.getLoadItem())
 		{
 			System.out.println("Load Item");
+			this.loadTalismans();
 		}
 		else if(arg0.getSource() == this.talismanMenuBar.getExitItem())
 		{
@@ -214,43 +217,108 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 	}
 	
+	private void loadTalismans()
+	{
+		//reset
+		
+		int status = this.fileChooser.showOpenDialog(null);
+		if(status == JFileChooser.APPROVE_OPTION)
+		{
+			File f = new File(this.fileChooser.getSelectedFile().getAbsolutePath());
+			
+			if(f.exists())
+			{
+				try{
+					ArrayList<String> loadThis = Utils.openFromFile(this.fileChooser.getSelectedFile().getAbsolutePath());
+					Talisman[] tempTalisman = this.createTalismanList(loadThis);
+					this.resetTable();
+					
+					
+				} catch (FileNotFoundException | NoSuchElementException e) {
+					JOptionPane.showMessageDialog(null, "Wrong file, file corrupted or missing. Please choose another file");
+					this.loadTalismans();
+				}
+			}
+			else
+			{
+				JOptionPane.showMessageDialog(null, "File does not exists.");
+				this.loadTalismans();
+			}
+		}
+		
+	}
+	
+	private void insertTalismansFromFileToDatabase(Talisman[] talismanArray)
+	{
+	}
+	
+	private Talisman[] createTalismanList(ArrayList<String> stringList)
+	{
+		Talisman[] talismanList = new Talisman[stringList.size()];
+		Scanner wordScanner;
+		
+		for(int i = 0; i < stringList.size(); i++)
+		{
+			wordScanner = new Scanner(stringList.get(i));
+			String skill_1 = wordScanner.next();
+			String skill_2 = wordScanner.next();
+			int skill1_val = Integer.parseInt(wordScanner.next());
+			int skill2_val = Integer.parseInt(wordScanner.next());
+			int slot = Integer.parseInt(wordScanner.next());
+			int rarity = Integer.parseInt(wordScanner.next());
+			
+			Talisman tempTalisman = new Talisman(skill_1, skill_2, skill1_val, skill2_val, slot, rarity);
+			talismanList[i] = tempTalisman;
+		}
+		
+		
+		return talismanList;
+	}
+	
+	private void resetTable()
+	{
+		this.id = 1;
+		this.talismanDAOImpl.clearTable();
+	}
 	
 	private void saveTalismans()
 	{
 		//TEST
-		testSave();
+		//testSave();
 		
 		//save
-		List<Talisman> saveThis = this.talismanDAOImpl.retrieveList();
-		String[] saveStrings = this.saveToFile(saveThis);
-		fileChooser.showSaveDialog(null);
-		try {
-			String filename = fileChooser.getSelectedFile().getAbsolutePath() + ".txt";
-			this.checkSaveFileExists(filename, saveStrings);
-		} catch ( FileNotFoundException | UnsupportedEncodingException e) {
-			System.out.println("Something went wrong");
-		} catch (NullPointerException e) {
-			System.out.println("Cancelled Operation");
+		int status = this.fileChooser.showSaveDialog(null);
+		
+		if(status == JFileChooser.APPROVE_OPTION)
+		{
+			List<Talisman> saveThis = this.talismanDAOImpl.retrieveList();
+			String[] saveStrings = this.saveToFile(saveThis);
+			try {
+				String filename = this.fileChooser.getSelectedFile().getAbsolutePath() + ".txt";
+				this.checkSaveFileExists(filename, saveStrings);
+			} catch ( FileNotFoundException | UnsupportedEncodingException e) {
+				System.out.println("Something went wrong");
+			} catch (NullPointerException e) {
+				System.out.println("Cancelled Operation");
+			}
 		}
+		
 	}
 	
 	private void checkSaveFileExists(String filename, String[] saveStrings) throws FileNotFoundException, UnsupportedEncodingException
 	{
 		File f = new File(filename);
-		if(f.exists() && this.fileChooser.getDialogType() == this.fileChooser.SAVE_DIALOG){
+		if(f.exists()){
             int result = JOptionPane.showConfirmDialog(null,"The file exists, overwrite?","Existing file",JOptionPane.YES_NO_CANCEL_OPTION);
             switch(result){
                 case JOptionPane.YES_OPTION:
         			Utils.writeToFile(saveStrings, filename);
                     return;
-                case JOptionPane.NO_OPTION:
-                    return;
-                case JOptionPane.CLOSED_OPTION:
-                	return;
                 case JOptionPane.CANCEL_OPTION:
-            		fileChooser.showSaveDialog(null);
-            		this.checkSaveFileExists(filename, saveStrings);
+                	this.saveTalismans();
                     return;
+                default:
+                	return;
             }
         }
 		
@@ -263,14 +331,14 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 		for(int i = 0; i < talisList.size(); i++)
 		{
-			stringList[i] = 	talisList.get(i).getSkill_1() + "\t" + 
-								talisList.get(i).getSkill_2() + "\t" + 
-								talisList.get(i).getSkill1_Value() + "\t" + 
-								talisList.get(i).getSkill2_Value() + "\t" + 
-								talisList.get(i).getSlots() + "\t" + 
-								talisList.get(i).getId();
+			stringList[i] = talisList.get(i).getSkill_1().replaceAll(" ", "_") + "\t" + 
+							talisList.get(i).getSkill_2().replaceAll(" ", "_") + "\t" + 
+							talisList.get(i).getSkill1_Value() + "\t" + 
+							talisList.get(i).getSkill2_Value() + "\t" + 
+							talisList.get(i).getSlots() + "\t" + 
+							talisList.get(i).getRarity();
 			
-			System.out.println(stringList[i]);
+			//System.out.println(stringList[i]);
 		}
 		
 		return stringList;
@@ -293,9 +361,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		DefaultComboBoxModel<String> tempSecModel = new DefaultComboBoxModel<String>(Utils.populateSkillArray(secondarySkill));
 		this.addTalismanPanel.getSecondarySkillBox().setModel(tempSecModel);
 		
+		File tempFile = new File(".");
 		fileChooser = new JFileChooser();
 		fileChooser.setFileFilter(new FileNameExtensionFilter( "Text File", "txt"));
-		File tempFile = new File(".");
 		fileChooser.setCurrentDirectory(tempFile);
 		fileChooser.setSelectedFile(new File("My_Talismans"));
 	}
