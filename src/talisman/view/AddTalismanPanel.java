@@ -82,7 +82,7 @@ public class AddTalismanPanel extends JPanel {
 							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(slotSpinner, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-									.addComponent(rarityLabel, GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE)
+									.addComponent(rarityLabel, GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
 									.addComponent(slotLabel)))))
 					.addGap(71))
 		);
@@ -101,13 +101,13 @@ public class AddTalismanPanel extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(secondaryLabel)
 						.addComponent(rarityLabel))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(secondarySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(secondarySkillBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(raritySpinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(addTalismanButton))
-					.addContainerGap(175, Short.MAX_VALUE))
+					.addGap(149))
 		);
 		setLayout(groupLayout);
 	}

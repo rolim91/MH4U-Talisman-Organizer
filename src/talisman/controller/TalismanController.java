@@ -229,47 +229,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 		
 	}
-	
-	public void searchTable()
-	{
-		System.out.println("Search Table");
-		
-		String primaryString = this.actionTalismanPanel.getPrimaryBox().getSelectedItem().toString();
-		String secondaryString = this.actionTalismanPanel.getSecondaryBox().getSelectedItem().toString();
-		
-		if(!primaryString.equals("--"))
-		{
-			List<Talisman> searchResult;
-			
-			if(secondaryString.equals("--"))
-				searchResult = this.talismanDAOImpl.searchSingle(primaryString);
-			else
-				searchResult = this.talismanDAOImpl.searchDouble(primaryString, secondaryString);
 
-			this.talismanTableModel.refreshTalismanList(searchResult);
-		}
-		else
-		{
-			JOptionPane.showMessageDialog(null, "Cannot search or Talisman(s) with empty primary skill.");
-		}
-	}
-	
-	public void showTable()
-	{
-		System.out.println("Show Table");
-		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
-	}
-	
-	public void deleteSelectedTalisman()
-	{
-		System.out.println("Delete Talisman");
-		int[] rowIndices = this.tableTalismanPanel.getTalismanTable().getSelectedRows();
-		
-		for(int i = 0; i < rowIndices.length; i++)
-		{
-			System.out.println(rowIndices[i]);
-		}
-	}
 	
 	/*
 	 * Initialize Variables
@@ -294,10 +254,13 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		this.actionTalismanPanel.getSecondaryBox().setModel(tempSecModelAction);
 		
 		File tempFile = new File(".");
-		fileChooser = new JFileChooser();
-		fileChooser.setFileFilter(new FileNameExtensionFilter( "Text File", "txt"));
-		fileChooser.setCurrentDirectory(tempFile);
-		fileChooser.setSelectedFile(new File("My_Talismans.txt"));
+		this.fileChooser = new JFileChooser();
+		this.fileChooser.setFileFilter(new FileNameExtensionFilter( "Standard Program File", "txt"));
+		this.fileChooser.setCurrentDirectory(tempFile);
+		this.fileChooser.setAcceptAllFileFilterUsed(false);
+		this.fileChooser.addChoosableFileFilter(new FileNameExtensionFilter( "Athena Charm File", "txt"));
+		this.fileChooser.setFileFilter(this.fileChooser.getChoosableFileFilters()[1]);
+		this.fileChooser.setSelectedFile(new File("My_Talismans.txt"));
 	}
 	
 	
@@ -490,6 +453,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	{
 		//reset
 		
+		
 		int status = this.fileChooser.showOpenDialog(null);
 		if(status == JFileChooser.APPROVE_OPTION)
 		{
@@ -499,7 +463,19 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 			{
 				try{
 					ArrayList<String> loadThis = Utils.openFromFile(this.fileChooser.getSelectedFile().getAbsolutePath());
-					Talisman[] tempTalisman = this.createTalismanList(loadThis);
+					Talisman[] tempTalisman = null;
+					
+					if(this.fileChooser.getFileFilter() == this.fileChooser.getChoosableFileFilters()[1])
+					{
+						System.out.println("Athena");
+						tempTalisman = this.createTalismanListAthena(loadThis);
+					}
+					else
+					{
+						System.out.println("Standard");
+						tempTalisman = this.createTalismanList(loadThis);
+					}
+					
 					this.insertLoadedToTable(tempTalisman);
 					
 					
@@ -534,8 +510,45 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 			
 			Talisman tempTalisman = new Talisman(i+1, skill_1, skill_2, skill1_val, skill2_val, slot, rarity);
 			talismanList[i] = tempTalisman;
+			wordScanner.close();
 		}
 		
+		return talismanList;
+	}
+	
+	private Talisman[] createTalismanListAthena(ArrayList<String> stringList)
+	{
+		Talisman[] talismanList = new Talisman[stringList.size() - 1];
+		Scanner wordScanner;
+		
+		for(int i = 1; i < stringList.size(); i++)
+		{
+			wordScanner = new Scanner(stringList.get(i));
+			wordScanner.useDelimiter(",");
+			int slot =  Integer.parseInt(wordScanner.next());
+			String skill_1 = wordScanner.next();
+			int skill1_val = Integer.parseInt(wordScanner.next());
+			
+			String skill_2 = wordScanner.next();
+			int skill2_val;
+
+			if(!skill_2.equals(""))
+			{
+				skill2_val = Integer.parseInt(wordScanner.next());
+			}
+			else
+			{
+				skill_2 = "--";
+				skill2_val = 0;
+			}
+			
+
+			
+			Talisman tempTalisman = new Talisman(i, skill_1, skill_2, skill1_val, skill2_val, slot, 0);
+			System.out.println(tempTalisman);
+			talismanList[i-1] = tempTalisman;
+			wordScanner.close();
+		}
 		
 		return talismanList;
 	}
@@ -562,7 +575,19 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		if(status == JFileChooser.APPROVE_OPTION)
 		{
 			List<Talisman> saveThis = this.talismanDAOImpl.retrieveList();
-			String[] saveStrings = this.saveToFile(saveThis);
+			String[] saveStrings = null;
+			
+			if(this.fileChooser.getFileFilter() == this.fileChooser.getChoosableFileFilters()[1])
+			{
+				System.out.println("Athena");
+				saveStrings = this.saveToFileAthena(saveThis);
+			}
+			else
+			{
+				System.out.println("Regular");
+				saveStrings = this.saveToFile(saveThis);
+			}
+			
 			try {
 				String filename = this.fileChooser.getSelectedFile().getAbsolutePath();
 				this.checkSaveFileExists(filename, saveStrings);
@@ -612,6 +637,93 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 		
 		return stringList;
+	}
+	
+	private String[] saveToFileAthena(List<Talisman> talisList)
+	{
+		String[] stringList = new String[talisList.size() + 1];
+		stringList[0] = "#Format: Slots,Skill1,Points1,Skill2,Points2";
+		System.out.println(stringList.length);
+		
+		for(int i = 1; i <= talisList.size(); i++)
+		{
+			stringList[i] = talisList.get(i-1).getSlots() + "," + 
+							talisList.get(i-1).getSkill_1() + "," + 
+							talisList.get(i-1).getSkill1_Value() + ",";
+			
+			if(talisList.get(i-1).getSkill_2().equals("--"))
+			{
+				stringList[i] += ",";
+			}
+			else
+			{
+				stringList[i] += 	talisList.get(i-1).getSkill_2() + "," + 
+									talisList.get(i-1).getSkill2_Value();
+			}
+							
+			System.out.println(stringList[i]);
+		}
+		
+		return stringList;
+	}
+	
+	public void searchTable()
+	{
+		System.out.println("Search Table");
+		
+		String primaryString = this.actionTalismanPanel.getPrimaryBox().getSelectedItem().toString();
+		String secondaryString = this.actionTalismanPanel.getSecondaryBox().getSelectedItem().toString();
+		
+		if(primaryString.equals("--") && secondaryString.equals("--"))
+		{
+			this.showTable();
+		}
+		else if(!primaryString.equals("--"))
+		{
+			List<Talisman> searchResult;
+			
+			if(secondaryString.equals("--"))
+				searchResult = this.talismanDAOImpl.searchSingle(primaryString);
+			else
+				searchResult = this.talismanDAOImpl.searchDouble(primaryString, secondaryString);
+
+			this.talismanTableModel.refreshTalismanList(searchResult);
+		}
+		else
+		{
+			JOptionPane.showMessageDialog(null, "Cannot search or Talisman(s) with empty primary skill.");
+		}
+	}
+	
+	public void showTable()
+	{
+		System.out.println("Show Table");
+		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
+	}
+	
+	public void deleteSelectedTalisman()
+	{
+		System.out.println("Delete Talisman");
+		int[] rowIndices = this.tableTalismanPanel.getTalismanTable().getSelectedRows();
+		Talisman[] deleteTalismans = new Talisman[rowIndices.length];
+		List<Talisman> saveList = this.talismanTableModel.getTalismanList();
+		boolean deleted = false;
+		
+		for(int i = 0; i < rowIndices.length; i++)
+		{
+			System.out.println(this.talismanTableModel.getTalisman(rowIndices[i]));
+			deleteTalismans[i] = this.talismanTableModel.getTalisman(rowIndices[i]);
+		}
+		
+		for(int i = deleteTalismans.length - 1; i >= 0; i--)
+		{
+			this.talismanDAOImpl.deleteTalisman(deleteTalismans[i]);
+			saveList.remove(rowIndices[i]);
+			deleted = true;
+		}
+		
+		if(deleted = true)
+			this.talismanTableModel.refreshTalismanList(saveList);
 	}
 	
 	
