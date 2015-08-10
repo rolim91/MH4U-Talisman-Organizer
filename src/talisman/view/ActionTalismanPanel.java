@@ -33,7 +33,7 @@ public class ActionTalismanPanel extends JPanel {
 		setBorder(new TitledBorder(null, "Action", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 20, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
@@ -119,9 +119,9 @@ public class ActionTalismanPanel extends JPanel {
 		
 		deleteButton = new JButton("Delete");
 		GridBagConstraints gbc_deleteButton = new GridBagConstraints();
-		gbc_deleteButton.insets = new Insets(0, 0, 5, 0);
+		gbc_deleteButton.anchor = GridBagConstraints.SOUTH;
 		gbc_deleteButton.gridx = 0;
-		gbc_deleteButton.gridy = 10;
+		gbc_deleteButton.gridy = 11;
 		add(deleteButton, gbc_deleteButton);
 	}
 

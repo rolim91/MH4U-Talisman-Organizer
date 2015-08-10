@@ -72,9 +72,9 @@ public class MainTalismanWindow {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(addTalismanPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+						.addComponent(addTalismanPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 767, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 631, Short.MAX_VALUE)
+							.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 619, Short.MAX_VALUE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(actionTalismanPanel, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
@@ -83,12 +83,12 @@ public class MainTalismanWindow {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 125, GroupLayout.PREFERRED_SIZE)
+					.addComponent(addTalismanPanel, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
-					.addContainerGap())
+						.addComponent(actionTalismanPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(tableTalismanPanel, GroupLayout.DEFAULT_SIZE, 398, Short.MAX_VALUE))
+					.addGap(6))
 		);
 		frmMonsterHunter.getContentPane().setLayout(groupLayout);
 		

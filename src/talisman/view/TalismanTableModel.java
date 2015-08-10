@@ -95,6 +95,16 @@ public class TalismanTableModel extends AbstractTableModel{
 		this.fireTableDataChanged();
 	}
 	
+	public Talisman getTalisman(int index)
+	{
+		return this.talismanList.get(index);
+	}
+	
+	public List<Talisman> getTalismanList()
+	{
+		return this.talismanList;
+	}
+	
 	@Override
 	public Class<?> getColumnClass(int colNum) {
 		
