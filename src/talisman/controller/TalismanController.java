@@ -225,7 +225,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 		else if(arg0.getSource() == this.actionTalismanPanel.getDeleteButton())
 		{
-			this.deleteSelectedTalisman();
+			this.deleteSelectedConfirmation();
 		}
 		
 	}
@@ -701,6 +701,25 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
 	}
 	
+	public void deleteSelectedConfirmation()
+	{
+		if(this.tableTalismanPanel.getTalismanTable().getSelectedRows().length > 0)
+		{
+		
+			int result = JOptionPane.showConfirmDialog(null,"Delete the selected talisman(s)?","Delete Talisman(s)", JOptionPane.YES_NO_OPTION);
+	        switch(result){
+	            case JOptionPane.YES_OPTION:
+	            	this.deleteSelectedTalisman();
+	                return;
+	            case JOptionPane.NO_OPTION:
+	                return;
+	            default:
+	            	return;
+	        }
+		}
+ 
+	}
+	
 	public void deleteSelectedTalisman()
 	{
 		System.out.println("Delete Talisman");
@@ -724,6 +743,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 		if(deleted = true)
 			this.talismanTableModel.refreshTalismanList(saveList);
+		
 	}
 	
 	
