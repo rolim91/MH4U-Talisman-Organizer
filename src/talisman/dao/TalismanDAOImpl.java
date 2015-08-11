@@ -1,5 +1,31 @@
 package talisman.dao;
 
+/**
+ * TalismanDAOImpl.java
+ *
+ * Name: rolim91
+ *
+ * Description: Implementation of the TalismanDAO Interface
+ * 
+ * Features:
+ * 				Handles database activity specifically sqlite
+ * 				Creates database and tables
+ * 				Delete talisman in database
+ * 				Insert talisman
+ * 					-Checks if insertion is valid
+ * 				Search for talisman
+ * 				Clear table
+ * 				Retrieve all talismans in database
+ *
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implemented above features
+ *
+ * rolim91 
+ */
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
