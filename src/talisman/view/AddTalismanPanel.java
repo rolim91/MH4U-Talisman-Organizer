@@ -1,5 +1,25 @@
 package talisman.view;
 
+/**
+ * AddTalismanPanel.java
+ *
+ * Name: rolim91
+ *
+ * Description: Add talisman panel allows users to choose attributes for the talisman
+ * 
+ * Features:	Users are able to select primary and secondary skills for talismans
+ * 				Select slots and rarity
+ * 
+ * 				The button allows the user to add a talisman with selected attributes to the database
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implemented features above
+ *
+ * rolim91 
+ */
+
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;

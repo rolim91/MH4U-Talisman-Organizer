@@ -1,5 +1,26 @@
 package talisman.view;
 
+/**
+ * TalismanTableModel.java
+ *
+ * Name: rolim91
+ *
+ * Description: Shows all panels and tables in a GUI
+ * 
+ * Features:
+ * 				Shows users all panels
+ * 					- ActionTalismanPanel
+ * 					- AddTalismanPanel
+ * 					- TableTalismanPanel
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implement all the features above
+ *
+ * rolim91 
+ */
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;

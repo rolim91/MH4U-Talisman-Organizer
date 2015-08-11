@@ -1,5 +1,26 @@
 package talisman.view;
 
+/**
+ * ActionTalismanPanel.java
+ *
+ * Name: rolim91
+ *
+ * Description: Actions to the table model are handled here
+ * 
+ * Features:
+ * 				Sets Visibility of buttons
+ * 				Refreshes table
+ * 				Search the database
+ *
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implemented above features
+ *
+ * rolim91 
+ */
+
 import java.util.EventListener;
 
 import javax.swing.JPanel;
@@ -167,7 +188,15 @@ public class ActionTalismanPanel extends JPanel {
 		return deleteButton;
 	}
 
-	
+	/**
+	 * Set button visibility
+	 */
+	public void setVisibility(boolean visibility)
+	{
+		this.showButton.setEnabled(visibility);
+		this.deleteButton.setEnabled(visibility);
+		this.searchButton.setEnabled(visibility);
+	}
 	
 	
 }

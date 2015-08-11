@@ -1,5 +1,23 @@
 package talisman.model;
 
+/**
+ * Talisman.java
+ *
+ * Name: rolim91
+ *
+ * Description: Talisman.java is the container for the talismans inputted by the user
+ * 
+ * Features:
+ * 				Create a talisman to be used by the program
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - 
+ *
+ * rolim91 
+ */
+
 public class Talisman {
 	
 	private int id;
@@ -56,42 +74,66 @@ public class Talisman {
 		
 	}
 	
-
+	
+	
+	
+	
+	/**
+	 * @return the id
+	 */
 	public int getId() {
 		return id;
 	}
 
+	/**
+	 * @return the skill_1
+	 */
 	public String getSkill_1() {
 		return skill_1;
 	}
 
+	/**
+	 * @return the skill_2
+	 */
 	public String getSkill_2() {
 		return skill_2;
 	}
 
+	/**
+	 * @return the skill1_Value
+	 */
 	public int getSkill1_Value() {
 		return skill1_Value;
 	}
 
+	/**
+	 * @return the skill2_Value
+	 */
 	public int getSkill2_Value() {
 		return skill2_Value;
 	}
 
+	/**
+	 * @return the slots
+	 */
 	public int getSlots() {
 		return slots;
 	}
 
+	/**
+	 * @return the type
+	 */
 	public int getType() {
 		return type;
 	}
 
+	/**
+	 * @return the rarity
+	 */
 	public int getRarity() {
 		return rarity;
 	}
 
-	
-	
-	
 	@Override
 	public String toString() {
 		return "Talisman [id=" + id + ", skill_1=" + skill_1 + ", skill_2=" + skill_2 + ", skill1_Value=" + skill1_Value
@@ -117,7 +159,7 @@ public class Talisman {
 		return 0;
 	}
 	
-	/*
+	/**
 	 * Check if object instance is negative
 	 * 
 	 * @return true if talisman is both skills are negative for double or the skill is negative for single
@@ -140,7 +182,7 @@ public class Talisman {
 		return false;
 	}
 	
-	/*
+	/**
 	 * Compare single talisman to another single talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
@@ -199,7 +241,7 @@ public class Talisman {
 		
 	}
 	
-	/*
+	/**
 	 * Compare single skilled Talisman to a double skilled Talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
@@ -230,7 +272,7 @@ public class Talisman {
 			return (this.skill1_Value <= tempTalisman.getSkill1_Value() ? -1 : 0);
 	}
 	
-	/*
+	/**
 	 * Swap Talismans that swaps the primary and secondary skills of the given talisman
 	 * 
 	 * @param currTalisman Talisman the Talisman that needs to be swapped
@@ -246,7 +288,7 @@ public class Talisman {
 		return temp;
 	}
 	
-	/*
+	/**
 	 * Compare double skilled Talisman to a single skilled Talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
@@ -258,7 +300,7 @@ public class Talisman {
 		return -1 * compTalisman.singleToDouble(this);
 	}
 	
-	/*
+	/**
 	 * Compare double skilled Talisman to another double skilled Talisman
 	 * 
 	 * @param Talisman compTalisman talisman to be compared to
@@ -321,28 +363,6 @@ public class Talisman {
 				
 			}
 		}
-		
-		/*
-
-
-		If mySlot == currSlot
-
-			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
-				keep myTalisman
-				delete currTalisman
-			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
-				delete myTalisman
-				keep currTalisman
-
-		if mySlot > currSlot
-
-			If myTalisman.skill1 > currTalisman.skill1 && myTalisman.skill2 > currTalisman.skill2
-				keep myTalisman
-				delete currTalisman
-			else if myTalisman.skill1 <= currTalisman.skill1 && myTalisman.skill2 <= currTalisman.skill2
-				keep myTalisman
-				keep currTalisman
-				*/
 		
 		return 0;
 	}

@@ -1,5 +1,21 @@
 package talisman.view;
 
+/**
+ * TableTalismanPanel.java
+ *
+ * Name: rolim91
+ *
+ * Description: Shows the user a table from a table model
+ * 
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implemented this panel
+ *
+ * rolim91 
+ */
+
 import java.util.Comparator;
 
 import javax.swing.JPanel;

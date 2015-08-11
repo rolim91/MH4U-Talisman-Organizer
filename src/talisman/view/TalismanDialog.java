@@ -1,5 +1,24 @@
 package talisman.view;
 
+/**
+ * TalismanDialog.java
+ *
+ * Name: rolim91
+ *
+ * Description: Shows a user a dialog window for actions taken by user when deleting or inserting a talisman
+ * 
+ * Features: 	Table of talisman
+ * 				Button of actions
+ * 				
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implemented above features
+ *
+ * rolim91 
+ */
+
 import javax.swing.JDialog;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -99,17 +118,26 @@ public class TalismanDialog extends JDialog {
 		getContentPane().setLayout(groupLayout);
 	}
 
-
+	/**
+	 * Return the reference to the done button
+	 * @return JButton of the done button
+	 */
 	public JButton getDoneButton() {
 		return doneButton;
 	}
 
-
+	/**
+	 * Set the table model to the given parameter
+	 * @param deleteTalismanModel
+	 */
 	public void setDeleteTalismanModel(TalismanTableModel deleteTalismanModel) {
 		this.deleteTalismanModel = deleteTalismanModel;
 	}
 
-
+	/**
+	 * Return the reference to the cancel button
+	 * @return JButton of the cancel button
+	 */
 	public JButton getCancelButton() {
 		return cancelButton;
 	}

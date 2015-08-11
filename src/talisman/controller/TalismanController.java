@@ -1,5 +1,23 @@
 package talisman.controller;
 
+/**
+ * TalismanController.java
+ *
+ * Name: rolim91
+ *
+ * Description: Controller for the application
+ * 
+ * Features: This program controls all of the application's buttons and interfaces
+ * 				
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - 
+ *
+ * rolim91 
+ */
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -91,10 +109,10 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	}
 	
 	
-	/*
-	 * 
+	/**
+	 * Initialize listeners
 	 */
-	public void initListeners()
+	private void initListeners()
 	{
 		this.addTalismanPanel.getAddTalismanButton().addActionListener(this);
 		this.addTalismanPanel.getPrimarySkillBox().addActionListener(this);
@@ -194,6 +212,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 			this.talismanDAOImpl.deleteThenInsert(currentTalisman);
 			this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
 			this.addTalismanPanel.getAddTalismanButton().setEnabled(true);
+			this.actionTalismanPanel.setVisibility(true);
 			currentTalisman = null;
 		}
 		else if(arg0.getSource() == this.deleteDialog.getCancelButton())
@@ -231,9 +250,8 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	}
 
 	
-	/*
+	/**
 	 * Initialize Variables
-	 * 
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
@@ -264,10 +282,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 	}
 	
 	
-	/*
+	/**
 	 * Initialize List of primary and secondary skills
 	 * 
-	 * returns nothing
 	 */
 	public void initSkills()
 	{
@@ -286,11 +303,13 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		//System.out.println(primarySkill.get(0));
 	}
 
-	/*
+	/**
 	 * Handles SkillBox Actions.
 	 * Sets the value of the selected spinner.
-	 * 
-	 * Returns the string of the selected actions box.
+	 * @param JSpinner - the spinner being changed
+	 * @param thisSkillList - the list of skills of which the spinner is referenced to
+	 * @param index - the index of the specific skill
+	 * @return the string of the selected actions box.
 	 */
 	private String handleSkillBoxActions(JSpinner thisSpinner, ArrayList<Skill> thisSkillList, int index)
 	{
@@ -300,6 +319,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		return tempString;
 	}
 	
+	/**
+	 * Add a talisman to database
+	 */
 	private void addTalisman()
 	{
 		if(!String.valueOf(this.addTalismanPanel.getPrimarySkillBox().getSelectedItem()).equals("--"))
@@ -316,7 +338,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 	}
 	
-	/*
+	/**
 	 * Create talisman from the set of AddTalismanPanel variables
 	 */
 	private Talisman createTalisman()
@@ -334,7 +356,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		return new Talisman(id, skill_1, skill_2, skill1_val, skill2_val, slot, rarity);
 	}
 	
-	/*
+	/**
 	 * Try to insert the talisman
 	 */
 	private void insertTalisman()
@@ -367,7 +389,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 	}
 	
-	/*
+	/**
 	 * Show Window with talismans that are required to be deleted
 	 */
 	private void showDeleteTalisman(List<Talisman> deleteTalisman)
@@ -376,6 +398,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		deleteDialog.setDeleteTalismanModel(deleteTableModel);
 		deleteDialog.pack();
 		this.addTalismanPanel.getAddTalismanButton().setEnabled(false);
+		this.actionTalismanPanel.setVisibility(false);
 		deleteDialog.setVisible(true);
 	}
 
@@ -449,6 +472,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		currentTalisman = null;
 	}
 	
+	/**
+	 * Load Talisman to program from file
+	 */
 	private void loadTalismans()
 	{
 		//reset
@@ -493,6 +519,11 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 	}
 	
+	/**
+	 * Create a list of Talisman object from a given array list of strings
+	 * @param stringList
+	 * @return Talisman array
+	 */
 	private Talisman[] createTalismanList(ArrayList<String> stringList)
 	{
 		Talisman[] talismanList = new Talisman[stringList.size()];
@@ -516,6 +547,11 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		return talismanList;
 	}
 	
+	/**
+	 * create a talisman list from a string list taken from Athena's ASS charms file
+	 * @param stringList
+	 * @return Talisman array
+	 */
 	private Talisman[] createTalismanListAthena(ArrayList<String> stringList)
 	{
 		Talisman[] talismanList = new Talisman[stringList.size() - 1];
@@ -553,6 +589,10 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		return talismanList;
 	}
 	
+	/**
+	 * Insert the talisman array to the database
+	 * @param talismanArray
+	 */
 	private void insertLoadedToTable(Talisman[] talismanArray)
 	{
 		this.talismanDAOImpl.clearTable();
@@ -565,6 +605,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 	}
 	
+	/**
+	 * Save the talismans to a file
+	 */
 	private void saveTalismans()
 	{
 		
@@ -600,6 +643,13 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 	}
 	
+	/**
+	 * Checks if file exists and ask to overwrite
+	 * @param filename
+	 * @param saveStrings
+	 * @throws FileNotFoundException
+	 * @throws UnsupportedEncodingException
+	 */
 	private void checkSaveFileExists(String filename, String[] saveStrings) throws FileNotFoundException, UnsupportedEncodingException
 	{
 		File f = new File(filename);
@@ -620,6 +670,11 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		Utils.writeToFile(saveStrings, filename);
 	}
 	
+	/**
+	 * Get a string of Strings that is to be saved to a file
+	 * @param talisList - a list of talisman to save
+	 * @return String array of talisman lines
+	 */
 	private String[] saveToFile(List<Talisman> talisList)
 	{
 		String[] stringList = new String[talisList.size()];
@@ -639,6 +694,11 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		return stringList;
 	}
 	
+	/**
+	 * Get a string of Strings that is to be saved to a file
+	 * @param talisList - a list of talisman to save
+	 * @return String array of talisman lines
+	 */
 	private String[] saveToFileAthena(List<Talisman> talisList)
 	{
 		String[] stringList = new String[talisList.size() + 1];
@@ -648,7 +708,7 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		for(int i = 1; i <= talisList.size(); i++)
 		{
 			stringList[i] = talisList.get(i-1).getSlots() + "," + 
-							talisList.get(i-1).getSkill_1() + "," + 
+							talisList.get(i-1).getSkill_1().replaceAll("_", " ") + "," + 
 							talisList.get(i-1).getSkill1_Value() + ",";
 			
 			if(talisList.get(i-1).getSkill_2().equals("--"))
@@ -657,16 +717,19 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 			}
 			else
 			{
-				stringList[i] += 	talisList.get(i-1).getSkill_2() + "," + 
+				stringList[i] += 	talisList.get(i-1).getSkill_2().replaceAll("_", " ") + "," + 
 									talisList.get(i-1).getSkill2_Value();
 			}
 							
-			System.out.println(stringList[i]);
+			//System.out.println(stringList[i]);
 		}
 		
 		return stringList;
 	}
 	
+	 /**
+	  * Search table for values
+	  */
 	public void searchTable()
 	{
 		System.out.println("Search Table");
@@ -695,12 +758,18 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		}
 	}
 	
+	/**
+	 * Shows all the talismans in the database
+	 */
 	public void showTable()
 	{
 		System.out.println("Show Table");
 		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
 	}
 	
+	/**
+	 * Confirms user if the selected talismans is to be deleted
+	 */
 	public void deleteSelectedConfirmation()
 	{
 		if(this.tableTalismanPanel.getTalismanTable().getSelectedRows().length > 0)
@@ -720,6 +789,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
  
 	}
 	
+	/**
+	 * Delete selected talismans
+	 */
 	public void deleteSelectedTalisman()
 	{
 		System.out.println("Delete Talisman");
@@ -746,7 +818,9 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		
 	}
 	
-	
+	/**
+	 * tests save feature
+	 */
 	private void testSave()
 	{
 		ArrayList<Talisman> highList = new ArrayList<Talisman>();
@@ -767,9 +841,66 @@ public class TalismanController implements ActionListener, ChangeListener, Windo
 		addTalismansToDatabase(highList);
 	}
 	
+	/*
+	 * Add talisman to databases
+	 */
 	private void addTalismansToDatabase(List<Talisman> taliList)
 	{
 		for(int i = 0; i < taliList.size(); i++)
 			this.talismanDAOImpl.insertTalisman(taliList.get(i));
 	}
+	
+	/**
+	 * TestAll
+	 */
+	private void testAll()
+	{
+		//test Primary
+		this.testPrimary();
+		
+		//test Secondary
+		this.testSecondary();
+		
+		this.talismanTableModel.refreshTalismanList(this.talismanDAOImpl.retrieveList());
+	}
+	
+	/**
+	 * testPrimary
+	 */
+	private void testPrimary()
+	{
+		
+		for(int i = 1; i < TalismanController.primarySkill.size(); i++)
+		{
+			Skill thisSkill = TalismanController.primarySkill.get(i);
+			
+			for(int j = thisSkill.getMin(); j <= thisSkill.getMax(); j++)
+			{
+				this.talismanDAOImpl.insertTalisman(new Talisman(this.id, thisSkill.getStringName(), "--", j, 0, 0, 0));
+				this.id++;
+			}
+			
+		}
+		
+	}
+	
+	/**
+	 * testSecondary
+	 */
+	private void testSecondary()
+	{
+		for(int i = 1; i < TalismanController.secondarySkill.size(); i++)
+		{
+			Skill thisSkill = TalismanController.secondarySkill.get(i);
+			
+			for(int j = thisSkill.getMin(); j <= thisSkill.getMax(); j++)
+			{
+				this.talismanDAOImpl.insertTalisman(new Talisman(this.id, "Attack", thisSkill.getStringName(), 0, j, 0, 0));
+				this.id++;
+			}
+			
+		}
+		
+	}
+	
 }

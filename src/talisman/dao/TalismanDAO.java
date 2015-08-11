@@ -1,5 +1,27 @@
 package talisman.dao;
 
+/**
+ * TalismanDAO.java
+ *
+ * Name: rolim91
+ *
+ * Description: 
+ * 
+ * Features:
+ * 				
+ *
+ *
+ * Output: An compressed image
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - 
+ *
+ * rolim91 
+ */
+
+
 import java.util.List;
 import talisman.model.Talisman;
 

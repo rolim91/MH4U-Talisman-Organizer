@@ -1,4 +1,25 @@
 package talisman.view;
+
+/**
+ * TalismanTableModel.java
+ *
+ * Name: rolim91
+ *
+ * Description: Creates the table for the talisman application
+ * 
+ * Features:
+ * 				Stores talismans
+ * 				Creates talismans
+ * 				Shows users of current table entries
+ * 
+ * BUGS: NONE
+ *
+ *
+ * Versions: 	1.0 - Implement all the features above
+ *
+ * rolim91 
+ */
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Comparator;
@@ -17,7 +38,7 @@ public class TalismanTableModel extends AbstractTableModel{
 	
 	private static final long serialVersionUID = -8854771373861055405L;
 	
-	/*
+	/**
 	 * Default Constructor
 	 */
 	public TalismanTableModel()
@@ -25,7 +46,7 @@ public class TalismanTableModel extends AbstractTableModel{
 		super();
 	}
 	
-	/*
+	/**
 	 * Constructor
 	 */
 	public TalismanTableModel(ArrayList<Talisman> talismanList)
@@ -78,16 +99,28 @@ public class TalismanTableModel extends AbstractTableModel{
 		
 	}
 	
+	/**
+	 * Add a new Talisman to table
+	 * @param newTalisman - new talisman to be inserted
+	 */
 	public void addRow(Talisman newTalisman) {
 		talismanList.add(newTalisman);
 		this.fireTableDataChanged();
 	}
 	
+	/**
+	 * Remove a row in the ArrayList using the rowIndex
+	 * @param rowIndex - talisman to be removed
+	 */
 	public void removeRow(int rowIndex) {
 		talismanList.remove(rowIndex);
 		this.fireTableRowsDeleted(rowIndex, rowIndex);
 	}
 	
+	/**
+	 * Replaces the entries of the arraylist to a new list of talismans
+	 * @param talismanList - the list to be used to shown the user
+	 */
 	public void refreshTalismanList(List<Talisman> talismanList)
 	{
 		this.talismanList = talismanList;
@@ -95,11 +128,20 @@ public class TalismanTableModel extends AbstractTableModel{
 		this.fireTableDataChanged();
 	}
 	
+	/**
+	 * Retrieves the talisman from the array list using an index
+	 * @param index - of the talisman in the array
+	 * @return Talisman that is retrieve by the function
+	 */
 	public Talisman getTalisman(int index)
 	{
 		return this.talismanList.get(index);
 	}
 	
+	/**
+	 * Retrieves the array used by the table model
+	 * @return List<Talisman> which contains the list shown to the user
+	 */
 	public List<Talisman> getTalismanList()
 	{
 		return this.talismanList;
