@@ -155,7 +155,7 @@ public class TalismanDAOImpl implements TalismanDAO {
 			String sql = "SELECT count(*) " +
 						 "FROM talisman_list " +
 						 "WHERE " +
-						 "(Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + ") OR (Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + ")";
+						 "(Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + " AND Skill2_value >= 0) OR (Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + ")";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			rs.next();
@@ -192,7 +192,7 @@ public class TalismanDAOImpl implements TalismanDAO {
 			
 			String sql = 	"SELECT * " +
 							"FROM talisman_list " +
-							"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + " AND Skill_2 = '--' )";
+							"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + " AND Skill2_value <= 0 )";
 			
 			ResultSet rs = stmt.executeQuery(sql);
 			return this.convertToTalismanList(rs);
@@ -250,29 +250,37 @@ public class TalismanDAOImpl implements TalismanDAO {
 		
 		System.out.println("checkInsertDouble");
 		
-		//create and execute query
-		try {
-			
-			stmt = c.createStatement();
-			
-			String sql = "SELECT count(*) " +
-						 "FROM talisman_list " +
-						 "WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value >= " + talisman.getSkill1_Value() + " AND Skill_2 = '" + talisman.getSkill_2() + "' AND Skill2_Value >= " + talisman.getSkill2_Value() + " AND Slots >= " + talisman.getSlots() + ") OR " + 
-						 "(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value >= " + talisman.getSkill2_Value() +" AND Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + ") ";
-			ResultSet rs = stmt.executeQuery(sql);
-			rs.next();
-			int rowCount = rs.getInt(1);
-			
-			System.out.println(rowCount);
-			
-			if(rowCount > 0)
-				return null;
-			else
-				return this.checkDeleteDouble(talisman);
-			
-		} catch ( Exception e ) {
-		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-		      System.exit(0);
+		if(talisman.getSkill2_Value() < 0)
+		{
+			return this.checkInsertSingle(talisman);
+		}
+		else
+		{
+			//create and execute query
+			try {
+				
+				stmt = c.createStatement();
+				
+				String sql = "SELECT count(*) " +
+							 "FROM talisman_list " +
+							 "WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value >= " + talisman.getSkill1_Value() + " AND Skill_2 = '" + talisman.getSkill_2() + "' AND Skill2_Value >= " + talisman.getSkill2_Value() + " AND Slots >= " + talisman.getSlots() + ") OR " + 
+							 "(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value >= " + talisman.getSkill2_Value() +" AND Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value >= " + talisman.getSkill1_Value() + " AND Slots >= " + talisman.getSlots() + ") ";
+				ResultSet rs = stmt.executeQuery(sql);
+				rs.next();
+				int rowCount = rs.getInt(1);
+				
+				System.out.println(rowCount);
+				
+				if(rowCount > 0)
+					return null;
+				else
+					return this.checkDeleteDouble(talisman);
+				
+			} catch ( Exception e ) {
+			      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			      System.exit(0);
+			}
+		
 		}
 		return null;
 	}
@@ -286,25 +294,32 @@ public class TalismanDAOImpl implements TalismanDAO {
 		
 		Statement stmt = null;
 		
-		//create and execute query
-		try {
-			
-			stmt = c.createStatement();
-			
-			String sql = 	"SELECT * " +
-							"FROM talisman_list " +
-							"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Skill_2 = '" + talisman.getSkill_2() + "' AND Skill2_Value <= " + talisman.getSkill2_Value() + " AND Slots <= " + talisman.getSlots() + ") OR " +
-							"(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value <= " + talisman.getSkill2_Value() + " AND Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + ") OR " +
-							"(Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Skill_2 = '--' AND Slots <= " + talisman.getSlots() + ") OR " +
-							"(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value <= " + talisman.getSkill2_Value() + " AND Skill_2 = '--' AND Slots <= " + talisman.getSlots() + ")";
-							
-			ResultSet rs = stmt.executeQuery(sql);
-			return this.convertToTalismanList(rs);
-			
-			
-		} catch ( Exception e ) {
-		      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-		      System.exit(0);
+		if(talisman.getSkill2_Value() < 0)
+		{
+			return this.checkDeleteSingle(talisman);
+		}
+		else
+		{
+			//create and execute query
+			try {
+				
+				stmt = c.createStatement();
+				
+				String sql = 	"SELECT * " +
+								"FROM talisman_list " +
+								"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Skill_2 = '" + talisman.getSkill_2() + "' AND Skill2_Value <= " + talisman.getSkill2_Value() + " AND Slots <= " + talisman.getSlots() + ") OR " +
+								"(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value <= " + talisman.getSkill2_Value() + " AND Skill_2 = '" + talisman.getSkill_1() + "' AND Skill2_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + ") OR " +
+								"(Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Skill_2 = '--' AND Slots <= " + talisman.getSlots() + ") OR " +
+								"(Skill_1 = '" + talisman.getSkill_2() + "' AND Skill1_Value <= " + talisman.getSkill2_Value() + " AND Skill_2 = '--' AND Slots <= " + talisman.getSlots() + ")";
+								
+				ResultSet rs = stmt.executeQuery(sql);
+				return this.convertToTalismanList(rs);
+				
+				
+			} catch ( Exception e ) {
+			      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+			      System.exit(0);
+			}
 		}
 		
 		return null;
@@ -338,7 +353,7 @@ public class TalismanDAOImpl implements TalismanDAO {
 			
 			stmt = c.createStatement();
 			String sql = 	"DELETE FROM talisman_list " +
-							"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + " AND Skill_2 = '--' )";
+							"WHERE (Skill_1 = '" + talisman.getSkill_1() + "' AND Skill1_Value <= " + talisman.getSkill1_Value() + " AND Slots <= " + talisman.getSlots() + " AND Skill2_value <= 0 )";
 			stmt.executeUpdate(sql);
 			
 		} catch ( Exception e ) {
